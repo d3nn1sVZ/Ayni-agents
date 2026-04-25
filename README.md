@@ -27,10 +27,9 @@ Hackathon MVP. Built 2026-04-25.
 
 ## Team
 
-- Dennis Vivas — Architect & Pitch
-- Jemil Castro — Backend
+- Dennis Vivas — Architect & Biz
 - Miluska Pajuelo — Frontend / UX
-- Cindy Rojas — Trust, Reputation, Storytelling
+- Cindy Rojas — Backend dev
 
 ## License
 
