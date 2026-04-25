@@ -1,14 +1,20 @@
 # AyniAgents
 
-> Collaborative knowledge plugins where AI agents pay tribes of human contributors via Lightning Network.
+> Programmable *ayni* for the agent economy. AI agents pay tribes of human contributors via Lightning Network — and every contributor gets their share in the same second.
 
 **Hack Nation 5 — Spiral Challenge 02 (Earn in the Agent Economy)**
 
+## What is *ayni*
+
+*Ayni* (Quechua: reciprocity, mutual help) is the Andean principle that has structured collective work for centuries. Today I help you, tomorrow you help me. Knowledge has always been shared this way. But it was never **paid** this way — payment fees made micro-reciprocity impossible.
+
+Lightning changes that. **AyniAgents brings ayni to the agent economy.**
+
 ## What is this
 
-When an AI agent needs specialized knowledge — Peruvian tax law, Spanish data science, regional healthcare — it can call a `tribu` (tribe) plugin. The plugin charges per call via Lightning Network. The payment is then automatically split among all contributors who maintain that tribe's knowledge.
+When an AI agent needs specialized knowledge — Peruvian tax law, Spanish data science, regional healthcare — it can call a `tribu` (tribe) plugin. The plugin charges per call via Lightning Network. The payment is then automatically split among all contributors who maintain that tribe's knowledge, in the same second the call happens.
 
-Wikipedia + Patreon + Lightning. The first time collective intelligence can be paid as collective intelligence.
+Wikipedia + Patreon + Lightning, anchored in an ancient cultural principle. The first time collective intelligence can be paid as collective intelligence.
 
 ## Why Lightning
 
