@@ -21,7 +21,7 @@ Es Wikipedia + Patreon + Lightning. Es la primera vez que la inteligencia colect
 ## Constraints
 
 - 14 horas hasta deadline (2026-04-26 09:00).
-- Equipo de 4 (Dennis architect/pitch, Jemil backend, Miluska front, Cindy trust/storytelling).
+- Equipo de 4 (Dennis architect/biz, Miluska frontend dev, Cindy backend dev).
 - Repo público nuevo creado hoy bajo cuenta x@dennisvivas.com, sin código previo.
 - Versión estable en repo a las 06:00 (Dennis lo dijo en el meeting).
 - Stack disponible: Claude Code (Opus 4.7), Codex (50 créditos), Vercel, Cursor, Antigravity IDE.
