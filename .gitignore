@@ -1,0 +1,56 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# testing
+coverage/
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# production
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+.env.*
+!.env.example
+
+# vercel
+.vercel
+
+# turbo
+.turbo
+
+# logs
+*.log
+
+# claude
+.claude/
+CLAUDE.md.local
+
+# wallets / secrets — NEVER commit
+*.wallet
+*.macaroon
+admin.macaroon
+*.cert
+seed.txt
+mnemonic.txt
