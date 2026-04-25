@@ -1,4 +1,4 @@
-# TribuAgents
+# AyniAgents
 
 > Collaborative knowledge plugins where AI agents pay tribes of human contributors via Lightning Network.
 
