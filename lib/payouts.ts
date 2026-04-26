@@ -15,20 +15,26 @@ import tribusData from '@/data/tribus.json'
 export type Tribu = {
   id: string
   name: string
+  category: string
   description: string
+  longDescription: string
   rating: number
+  totalRatings: number
   consultas: number
   pricePerCallSats: number
+  responseTime: string
+  tags: string[]
+  isActive: boolean
+  verified: boolean
   splits: Array<{
     wallet: string
     role: string
     pct: number
-    // BOLT12 offer or Lightning Address (e.g. "name@walletofsatoshi.com").
-    // Used by scripts/demo-flow.sh to fan real onward Lightning sends to
-    // each contributor after an L402 payment lands. For the demo we point
-    // every contributor at the same loopback BOLT12 sink so payments
-    // succeed end-to-end without needing 8 distinct wallets to be funded
-    // and reachable; for production you assign each contributor their own.
+    // BOLT12 offer or Lightning Address (e.g. "name@coinos.io"). Used by
+    // scripts/demo-flow.sh to fan real onward Lightning sends to each
+    // contributor after an L402 payment lands. Optional in the type so the
+    // demo can configure some splits without addresses (visualization-only),
+    // but required for the redistribution to actually settle on-chain.
     lnAddress?: string
   }>
   knowledge: Record<string, string>
@@ -42,8 +48,10 @@ export type PayoutEvent = {
   phase: PayoutEventPhase
   tribuId: string
   tribuName: string
+  category: string
   totalSats: number
   query: string
+  agentId: string
   splits: Array<{ wallet: string; role: string; sats: number }>
 }
 
@@ -70,6 +78,7 @@ function makeEvent(
   tribu: Tribu,
   query: string,
   phase: PayoutEventPhase,
+  agentId?: string,
 ): PayoutEvent {
   return {
     id: `${tribu.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -77,8 +86,10 @@ function makeEvent(
     phase,
     tribuId: tribu.id,
     tribuName: tribu.name,
+    category: tribu.category,
     totalSats: tribu.pricePerCallSats,
     query,
+    agentId: agentId ?? `@agent-${Math.random().toString(36).slice(2, 8)}`,
     splits: splitSats(tribu.pricePerCallSats, tribu.splits),
   }
 }
@@ -104,14 +115,14 @@ export function splitSats(
   return floored
 }
 
-export function publishRequest(tribu: Tribu, query: string) {
-  const event = makeEvent(tribu, query, 'requested')
+export function publishRequest(tribu: Tribu, query: string, agentId?: string) {
+  const event = makeEvent(tribu, query, 'requested', agentId)
   for (const fn of subscribers) fn(event)
   return event
 }
 
-export function publishPayout(tribu: Tribu, query: string) {
-  const event = makeEvent(tribu, query, 'settled')
+export function publishPayout(tribu: Tribu, query: string, agentId?: string) {
+  const event = makeEvent(tribu, query, 'settled', agentId)
   for (const fn of subscribers) fn(event)
   return event
 }
