@@ -127,6 +127,11 @@ def add_accent_bar(slide, left, top, height, *, width=Inches(0.07), color=ACCENT
     return add_rect(slide, left, top, width, height, color)
 
 
+def add_notes(slide, text):
+    """Add speaker notes to a slide. Visible in Presenter View only."""
+    slide.notes_slide.notes_text_frame.text = text
+
+
 def slide_blank(prs):
     blank_layout = prs.slide_layouts[6]  # blank
     return prs.slides.add_slide(blank_layout)
@@ -170,6 +175,12 @@ add_text(s, "Lima, Peru   ·   Hack Nation 5   ·   Spiral Challenge 02   ·   a
          Inches(0), Inches(6.9), SLIDE_W, Inches(0.4),
          size=11, color=MUTED, align="center", font=BODY_FONT)
 
+add_notes(s, """[TITLE]   ~5s  ·  greet + name
+
+Hi — we're Ayni. Four builders out of Lima, Peru.
+
+— smile, breathe, click. Don't open with the etymology of "ayni" — that's the closer.""")
+
 
 # === Slide 2: What we do ===
 s = slide_blank(prs)
@@ -197,6 +208,14 @@ add_text(s, "ayniw.com", Inches(0.6), Inches(6.9), Inches(12.13), Inches(0.4),
          size=11, color=MUTED, align="left")
 add_text(s, "2 / 8", Inches(0.6), Inches(6.9), Inches(12.13), Inches(0.4),
          size=11, color=MUTED, align="right")
+
+add_notes(s, """[WHAT WE DO]   ~30s  ·  set the scene with the concrete example
+
+Ayni is a marketplace where AI agents pay tribes of human experts to answer specialized questions, over Lightning Network.
+
+An accounting agent calls our API, asks "what's the IGV rate in Peru," and pays 100 sats. In the same second, that payment auto-splits across all five contributors who maintain Peru's tax tribe — forty sats to the curador, thirty to the validador, ten each to three contribuidores.
+
+— stress "auto-splits" and "five contributors". Pause before clicking to slide 3.""")
 
 
 # === Slide 3: The wedge (the killer slide) ===
@@ -256,6 +275,14 @@ add_text(s, "We do the one thing the existing payment stack physically cannot.",
          Inches(0.6), Inches(6.85), Inches(12.13), Inches(0.5),
          size=14, italic=True, color=ACCENT_2, font=BODY_FONT, align="center")
 
+add_notes(s, """[THE WEDGE]   ~25s  ·  ★ the moment the pitch is won ★
+
+Stripe physically cannot do this.
+
+A 30-cent minimum fee makes splitting a sub-cent payment across five humans negative-sum. Lightning makes it free, instant, and global. That's the entire wedge.
+
+— PAUSE for 1 full second after "Stripe physically cannot do this." Let it land. If the room knows payments, they will fact-check it in their head and conclude you're right. That's the moment.""")
+
 
 # === Slide 4: The problem ===
 s = slide_blank(prs)
@@ -284,6 +311,12 @@ add_runs(s, [
 add_text(s, "Not because nobody wants to pay them. Because the rails can't.",
          Inches(0.6), Inches(6.4), Inches(12.13), Inches(0.7),
          size=22, italic=True, color=MUTED, font=BODY_FONT, line_spacing=1.1)
+
+add_notes(s, """[THE PROBLEM]   ~20s  ·  direct, no filler
+
+AI agents are scaling fast. The model providers get paid. The platforms get paid. The human experts whose knowledge powers the answers — the Lima CPA, the Spanish data scientist, the regional lawyer — get nothing. Not because nobody wants to pay them. Because the rails can't.
+
+— say "rails can't" with conviction. This is the gap.""")
 
 
 # === Slide 5: How it works ===
@@ -363,6 +396,14 @@ for c in chips:
 add_text(s, "5 / 8", Inches(0.6), Inches(7.0), Inches(12.13), Inches(0.4),
          size=11, color=MUTED, align="right")
 
+add_notes(s, """[HOW IT WORKS]   ~25s  ·  show the demo
+
+We built it on Bitcoin mainnet during the hackathon. An agent hits our endpoint, gets a 402 Payment Required with a Lightning invoice and an L402 macaroon, pays it in seconds, retries with the preimage, and gets the expert answer. Then a second Lightning fan-out sends each contributor their share.
+
+Two tribus live today. Public manifest at slash-well-known so any agent can self-discover. Live at ayniw.com. MIT on GitHub.
+
+— hit "Bitcoin mainnet" and "live at ayniw.com" hard. If you have a screen, pull up the dashboard while talking.""")
+
 
 # === Slide 6: Live tribus ===
 s = slide_blank(prs)
@@ -432,6 +473,16 @@ add_text(s, "Adding a tribu = config change in data/tribus.json. Not a code chan
          Inches(0.6), Inches(6.7), Inches(12.13), Inches(0.5),
          size=14, italic=True, color=ACCENT_2, font=BODY_FONT, align="center")
 
+add_notes(s, """[LIVE TRIBUS]   ~15s  ·  proof of scale-out
+
+Two tribus live today: Tributario PE — Peruvian tax law, 100 sat per call, 5 contributors. Data Science ES — Spanish data science, 75 sat per call, 3 contributors.
+
+Adding a tribu is a config change in data/tribus.json. Not a code change. That means every additional knowledge community is a 5-minute onboard, not a sprint.
+
+— if pressed for time, drop the sat amounts and just say "two tribus live, 5 contributors and 3 contributors respectively."
+
+Anticipated Q: "what about quality / fraud?" — the curador role exists for that. Validation is the tribu's job, not ours.""")
+
 
 # === Slide 7: Why now / Why us ===
 s = slide_blank(prs)
@@ -487,6 +538,14 @@ for line in why_us:
 add_text(s, "7 / 8", Inches(0.6), Inches(7.0), Inches(12.13), Inches(0.4),
          size=11, color=MUTED, align="right")
 
+add_notes(s, """[WHY NOW / WHY US]   ~15s
+
+Why now: L402 just got ergonomic, agents went from demo to production this year, and Lightning is mature.
+
+Why us: we're four builders in Lima, and the communities we're monetizing — Peruvian contadores, Latam data scientists — are people we can call by name today.
+
+— "people we can call by name today" is the line that separates us from a Silicon-Valley pitch on the same idea. Don't rush past it.""")
+
 
 # === Slide 8: The ask ===
 s = slide_blank(prs)
@@ -518,6 +577,14 @@ add_text(s, "Ayni is reciprocity, encoded in software, at sub-cent scale.",
 add_text(s, "ayniw.com     ·     github.com/d3nn1sVZ/Ayni-agents",
          Inches(0.6), Inches(6.6), Inches(11.3), Inches(0.5),
          size=18, color=TEXT, font=MONO_FONT, align="center")
+
+add_notes(s, """[THE ASK]   ~10s  ·  end on the closer, then STOP
+
+Ayni is the Quechua word for reciprocity. We've encoded it in software.
+
+We're asking Spiral to back the only payment rail that can.
+
+— say the final line slowly. Make eye contact. STOP. Don't fill the silence — let the judge speak first. The next person to talk should not be you.""")
 
 
 # --- Save ---

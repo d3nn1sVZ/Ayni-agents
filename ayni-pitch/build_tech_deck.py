@@ -109,6 +109,12 @@ def add_eyebrow(slide, text):
              line_spacing=1.0)
 
 
+def add_notes(slide, text):
+    """Add speaker notes to a slide. Visible in Presenter View only."""
+    notes_tf = slide.notes_slide.notes_text_frame
+    notes_tf.text = text
+
+
 # ---------------- BUILD ----------------
 
 prs = Presentation()
@@ -138,6 +144,12 @@ add_text(s, "AI agents pay sub-cent in Lightning. Payment auto-splits to the con
 add_text(s, "Hack Nation 5 — Tech Video — 60 sec",
          Inches(0), Inches(6.8), SLIDE_W, Inches(0.4),
          size=12, color=MUTED, font=BODY_FONT, align="center")
+
+add_notes(s, """[0:00 – 0:08]   HERO
+
+Ayni: AI agents pay sub-cent in Lightning, and every payment auto-splits to the contributors who maintain the knowledge.
+
+— beat — let it land before clicking to slide 2.""")
 
 
 # === Slide 2: System Architecture (0:08 – 0:25) ===
@@ -285,6 +297,22 @@ add_text(s, "(1) agent calls API   →   (2) MDK issues + verifies Lightning inv
          Inches(0.6), Inches(7.0), Inches(12.13), Inches(0.4),
          size=11, italic=True, color=ACCENT_2, font=BODY_FONT, align="center", line_spacing=1.0)
 
+add_notes(s, """[0:08 – 0:25]   SYSTEM ARCHITECTURE   ★ centerpiece slide ★
+
+(point at the AGENT column on the left)
+Stack: Next.js 15 on Vercel, MoneyDevKit 0.16, L402 over Bitcoin mainnet.
+
+(sweep right, into the AYNI middle container)
+An agent discovers our endpoints through a public agent-skill manifest, then calls the API.
+
+(point at arrow 2 — Ayni → Lightning)
+The API returns a 402 with a Lightning invoice and a macaroon. The agent's wallet pays. We verify the preimage and return the answer.
+
+(point at arrow 3 — Splitter → Contributors)
+Then the splitter fans out real Lightning sends to each contributor's BOLT12 or Lightning Address.
+
+— 17 seconds. Densest slide. Practice this one alone first. Use cursor / laser pointer (Ctrl+L in slideshow mode) to point at each zone in order.""")
+
 
 # === Slide 3: L402 zoom (0:25 – 0:35) ===
 s = slide_blank(prs)
@@ -328,6 +356,12 @@ for i, node in enumerate(nodes):
 add_text(s, "End-to-end on Bitcoin mainnet. Real invoices. Real preimage verification.",
          Inches(0.6), Inches(5.5), Inches(12.13), Inches(0.5),
          size=16, italic=True, color=ACCENT_2, font=BODY_FONT, align="center")
+
+add_notes(s, """[0:25 – 0:35]   L402 ZOOM
+
+Inside the API route: MDK returns the 402 with the Lightning invoice and macaroon. The agent retries with the preimage. We verify SHA-256 against the payment hash before answering.
+
+— stress: "402", "macaroon", "preimage", "SHA-256". 10 seconds.""")
 
 
 # === Slide 4: Splitter (0:35 – 0:46) ===
@@ -388,6 +422,12 @@ add_text(s, "Each wallet paid by BOLT12 or Lightning Address via the MDK agent-w
          Inches(0.6), Inches(6.65), Inches(12.13), Inches(0.5),
          size=14, italic=True, color=MUTED, font=BODY_FONT, align="center")
 
+add_notes(s, """[0:35 – 0:46]   ONWARD FAN-OUT
+
+The splitter uses floor-then-residual rounding — per-wallet sats sum exactly to the total. A 100-sat call to Tributario PE pays 40-30-10-10-10 to five wallets in seconds.
+
+— stress: "floor-then-residual", "exactly", "40-30-10-10-10". 11 seconds.""")
+
 
 # === Slide 5: Critical fix (0:46 – 0:55) ===
 s = slide_blank(prs)
@@ -433,6 +473,12 @@ add_text(s, "fix(l402): externalize ws + lightning native module, set nodejs run
          Inches(0.6), Inches(6.95), Inches(12.13), Inches(0.4),
          size=12, italic=True, color=MUTED, font=MONO_FONT, align="center", line_spacing=1.0)
 
+add_notes(s, """[0:46 – 0:55]   IMPLEMENTATION — THE FIX
+
+Critical fix: the WebSocket lib and the native Lightning binding broke under webpack. We externalized them and pinned the route to the Node.js runtime. That commit unlocked end-to-end.
+
+— stress: "externalized", "Node.js runtime", "unlocked end-to-end". 9 seconds.""")
+
 
 # === Slide 6: Closing card (0:55 – 1:00) ===
 s = slide_blank(prs)
@@ -453,6 +499,12 @@ add_text(s, "ayniw.com",
 add_text(s, "github.com/d3nn1sVZ/Ayni-agents",
          Inches(0), Inches(6.2), SLIDE_W, Inches(0.6),
          size=24, color=MUTED, font=MONO_FONT, align="center", line_spacing=1.0)
+
+add_notes(s, """[0:55 – 1:00]   CLOSING
+
+Live on mainnet at ayniw.com. MIT on GitHub.
+
+— stop talking. Don't read the URL twice. 5 seconds.""")
 
 
 out = Path("ayni-pitch/Ayni-tech-deck.pptx")
