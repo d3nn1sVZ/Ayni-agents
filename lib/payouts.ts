@@ -1,10 +1,14 @@
 // In-memory event bus for the payout dashboard.
-// Frontend subscribes via SSE at /api/payouts/stream and animates each event.
 //
-// For the hackathon MVP, the redistribution is *visualized* in real time but
-// the onward Lightning sends to N contributor wallets are simulated (we log
-// the splits but do not actually send sats out yet). Wiring the real splits
-// is the next milestone — see docs/DESIGN.md.
+// Events come in two phases so the demo can show the full lifecycle:
+//   "requested" — an agent hit the L402 endpoint and got a 402 invoice back.
+//                  Lights up the dashboard immediately, even before payment.
+//   "settled"   — the agent paid the invoice and unlocked the response.
+//                  This is the money-shot: payouts fan out to N contributors.
+//
+// For the hackathon MVP, the onward Lightning sends to N contributor wallets
+// are visualized in real time but not yet executed on-chain. Wiring real
+// onward payouts is the next milestone — see docs/DESIGN.md.
 
 import tribusData from '@/data/tribus.json'
 
@@ -19,8 +23,12 @@ export type Tribu = {
   knowledge: Record<string, string>
 }
 
+export type PayoutEventPhase = 'requested' | 'settled'
+
 export type PayoutEvent = {
+  id: string
   ts: number
+  phase: PayoutEventPhase
   tribuId: string
   tribuName: string
   totalSats: number
@@ -47,9 +55,15 @@ export function subscribe(fn: (e: PayoutEvent) => void) {
   }
 }
 
-export function publishPayout(tribu: Tribu, query: string) {
-  const event: PayoutEvent = {
+function makeEvent(
+  tribu: Tribu,
+  query: string,
+  phase: PayoutEventPhase,
+): PayoutEvent {
+  return {
+    id: `${tribu.id}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     ts: Date.now(),
+    phase,
     tribuId: tribu.id,
     tribuName: tribu.name,
     totalSats: tribu.pricePerCallSats,
@@ -60,6 +74,16 @@ export function publishPayout(tribu: Tribu, query: string) {
       sats: Math.round(tribu.pricePerCallSats * s.pct),
     })),
   }
+}
+
+export function publishRequest(tribu: Tribu, query: string) {
+  const event = makeEvent(tribu, query, 'requested')
+  for (const fn of subscribers) fn(event)
+  return event
+}
+
+export function publishPayout(tribu: Tribu, query: string) {
+  const event = makeEvent(tribu, query, 'settled')
   for (const fn of subscribers) fn(event)
   return event
 }

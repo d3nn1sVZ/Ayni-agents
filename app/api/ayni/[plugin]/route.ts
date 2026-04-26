@@ -1,5 +1,5 @@
 import { withPayment } from '@moneydevkit/nextjs/server'
-import { getTribu, publishPayout } from '@/lib/payouts'
+import { getTribu, publishPayout, publishRequest } from '@/lib/payouts'
 
 // Lightning node and L402 token verification both need full Node APIs.
 export const runtime = 'nodejs'
@@ -24,9 +24,7 @@ const handler = async (req: Request, ctx: RouteContext) => {
   const knowledgeKey = pickKnowledgeKey(query, tribu)
   const answer = tribu.knowledge[knowledgeKey] ?? tribu.knowledge.default
 
-  // Publish the payout split to the live dashboard. Real onward Lightning
-  // sends to contributor wallets are the next milestone; today we surface
-  // the split so the demo can show "money fanning out to N humans" in real time.
+  // Settled: payment arrived, payouts fan out to all contributors.
   publishPayout(tribu, query)
 
   return Response.json({
@@ -62,8 +60,6 @@ function pickKnowledgeKey(query: string, tribu: ReturnType<typeof getTribu>): st
 
 // Pricing pulled from the tribu config so each plugin can charge its own rate.
 async function priceFromRequest(req: Request): Promise<number> {
-  // The route param isn't easily accessible from the price function in MDK's
-  // current wrapper, so we re-parse the URL. Same answer either way.
   const url = new URL(req.url)
   const match = url.pathname.match(/\/api\/ayni\/([^/]+)/)
   const pluginId = match?.[1]
@@ -72,10 +68,25 @@ async function priceFromRequest(req: Request): Promise<number> {
   return tribu?.pricePerCallSats ?? 100
 }
 
-export const GET = withPayment(
+const paywalled = withPayment(
   {
     amount: priceFromRequest,
     currency: 'SAT',
   },
   handler,
 )
+
+// Outer wrapper: emit a "requested" event the moment a request hits, before
+// the L402 paywall responds. The dashboard lights up immediately so the demo
+// looks alive even before the agent pays. The "settled" event fires inside
+// the inner handler once the L402 unlock succeeds.
+export const GET = async (req: Request, ctx: RouteContext) => {
+  const { plugin } = await ctx.params
+  const tribu = getTribu(plugin)
+  if (tribu) {
+    const url = new URL(req.url)
+    const query = url.searchParams.get('q')?.trim() ?? ''
+    publishRequest(tribu, query)
+  }
+  return paywalled(req, ctx)
+}

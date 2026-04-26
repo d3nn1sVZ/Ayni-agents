@@ -20,17 +20,27 @@ const tribus = Object.values(
 
 export default function Page() {
   const [events, setEvents] = useState<PayoutEvent[]>([])
+  const [triggering, setTriggering] = useState<string | null>(null)
 
   useEffect(() => {
     const es = new EventSource('/api/payouts/stream')
     es.onmessage = (msg) => {
       try {
         const ev = JSON.parse(msg.data) as PayoutEvent
-        setEvents((prev) => [ev, ...prev].slice(0, 20))
+        setEvents((prev) => [ev, ...prev].slice(0, 30))
       } catch {}
     }
     return () => es.close()
   }, [])
+
+  async function triggerDemo(tribuId: string) {
+    if (triggering) return
+    setTriggering(tribuId)
+    try {
+      await fetch(`/api/demo/${tribuId}`, { method: 'POST' })
+    } catch {}
+    setTimeout(() => setTriggering(null), 2000)
+  }
 
   return (
     <main className="min-h-screen bg-ayni-cloud text-ayni-night">
@@ -101,17 +111,28 @@ export default function Page() {
 ↳ 402 Payment Required (Lightning invoice)
 ↳ pay → respuesta + payout split a ${t.splits.length} wallets`}
                   </pre>
+
+                  <button
+                    type="button"
+                    onClick={() => triggerDemo(t.id)}
+                    disabled={triggering === t.id}
+                    className="mt-4 w-full rounded-lg border border-ayni-earth/40 bg-ayni-earth/5 px-4 py-2.5 text-sm font-medium text-ayni-earth transition-colors hover:bg-ayni-earth/10 disabled:opacity-50"
+                  >
+                    {triggering === t.id
+                      ? 'Disparando ayni...'
+                      : 'Disparar ayni de demostración →'}
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
+          <div className="lg:sticky lg:top-6 lg:self-start">
             <h2 className="font-display text-2xl">
               Pagos en tiempo real
             </h2>
             <p className="mt-2 text-sm text-ayni-stone/70">
-              Cada vez que un agente consume una tribu, los sats se reparten
+              Cada vez que un agente consulta una tribu, los sats se reparten
               entre los contribuidores. Esto es imposible con Stripe.
             </p>
 
@@ -127,35 +148,7 @@ export default function Page() {
               )}
 
               {events.map((ev) => (
-                <div
-                  key={ev.ts}
-                  className="rounded-2xl border border-ayni-maize/40 bg-ayni-maize/5 p-5 shadow-sm"
-                >
-                  <div className="flex items-center justify-between text-xs text-ayni-stone/60">
-                    <span className="font-mono uppercase tracking-wider">
-                      {ev.tribuName}
-                    </span>
-                    <span>+{ev.totalSats} sat</span>
-                  </div>
-                  <p className="mt-2 truncate text-sm text-ayni-stone/80">
-                    “{ev.query || '(sin query)'}”
-                  </p>
-                  <ul className="mt-3 space-y-1.5">
-                    {ev.splits.map((s) => (
-                      <li
-                        key={s.wallet}
-                        className="flex items-center justify-between text-xs"
-                      >
-                        <span className="font-mono text-ayni-stone/70">
-                          {s.wallet} · {s.role}
-                        </span>
-                        <span className="font-mono font-semibold text-ayni-earth">
-                          +{s.sats} sat
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <EventCard key={ev.id} ev={ev} />
               ))}
             </div>
           </div>
@@ -166,5 +159,57 @@ export default function Page() {
         Hack Nation 5 · Spiral Challenge 02 · Built with MoneyDevKit + Lightning
       </footer>
     </main>
+  )
+}
+
+function EventCard({ ev }: { ev: PayoutEvent }) {
+  if (ev.phase === 'requested') {
+    return (
+      <div className="rounded-2xl border border-ayni-sky/40 bg-ayni-sky/5 p-5 shadow-sm">
+        <div className="flex items-center justify-between text-xs text-ayni-stone/60">
+          <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
+            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-ayni-sky" />
+            agente consulta · {ev.tribuName}
+          </span>
+          <span>· · · sats</span>
+        </div>
+        <p className="mt-2 truncate text-sm text-ayni-stone/80">
+          “{ev.query || '(sin query)'}”
+        </p>
+        <p className="mt-3 text-xs text-ayni-stone/50">
+          Esperando confirmación de pago Lightning...
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-2xl border border-ayni-maize/40 bg-ayni-maize/5 p-5 shadow-sm">
+      <div className="flex items-center justify-between text-xs text-ayni-stone/60">
+        <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
+          <span className="inline-block h-2 w-2 rounded-full bg-ayni-maize" />
+          ayni cumplido · {ev.tribuName}
+        </span>
+        <span className="font-semibold text-ayni-earth">+{ev.totalSats} sat</span>
+      </div>
+      <p className="mt-2 truncate text-sm text-ayni-stone/80">
+        “{ev.query || '(sin query)'}”
+      </p>
+      <ul className="mt-3 space-y-1.5">
+        {ev.splits.map((s) => (
+          <li
+            key={s.wallet}
+            className="flex items-center justify-between text-xs"
+          >
+            <span className="font-mono text-ayni-stone/70">
+              {s.wallet} · {s.role}
+            </span>
+            <span className="font-mono font-semibold text-ayni-earth">
+              +{s.sats} sat
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
