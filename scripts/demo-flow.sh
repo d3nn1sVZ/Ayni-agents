@@ -126,14 +126,21 @@ while [ $i -lt $SPLIT_COUNT ]; do
   fi
 
   printf "      destination (truncated): %s…\n" "${LN_ADDR:0:60}"
+  # set +e for the send so a single payout failure (insufficient balance,
+  # no route, etc.) doesn't abort the rest of the redistribution loop.
+  set +e
   PAY_OUT=$($WALLET send "$LN_ADDR" "$SATS" 2>&1 | tail -5)
+  PAY_RC=$?
+  set -e
   STATUS=$(echo "$PAY_OUT" | grep -oE '"status":"[a-z]+"' | head -1 | sed 's/"status":"//;s/"$//')
-  if [ "$STATUS" = "completed" ]; then
+  if [ "$PAY_RC" -eq 0 ] && [ "$STATUS" = "completed" ]; then
     printf "      ${GREEN}✓ sent${RESET}\n"
     SUCCESSES=$((SUCCESSES + 1))
     TOTAL_SENT=$((TOTAL_SENT + SATS))
   else
-    printf "      ${RED}✗ failed${RESET}: %s\n" "$(echo "$PAY_OUT" | head -1)"
+    REASON=$(echo "$PAY_OUT" | grep -oE '"error":"[^"]+"' | head -1 | sed 's/"error":"//;s/"$//')
+    [ -z "$REASON" ] && REASON=$(echo "$PAY_OUT" | head -1 | tr -d '\n' | cut -c1-100)
+    printf "      ${RED}✗ failed${RESET}: %s\n" "$REASON"
     FAILURES=$((FAILURES + 1))
   fi
   i=$((i+1))
