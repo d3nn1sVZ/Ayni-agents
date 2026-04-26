@@ -1,42 +1,157 @@
-# AyniAgents
+# Ayni
 
-> Programmable *ayni* for the agent economy. AI agents pay tribes of human contributors via Lightning Network — and every contributor gets their share in the same second.
+> **Programmable *ayni* for the agent economy.** AI agents pay tribes of human contributors via Lightning Network — and every contributor gets their share in the same second, for fractions of a cent.
 
 **Hack Nation 5 — Spiral Challenge 02 (Earn in the Agent Economy)**
 
+🌐 Live: [ayniw.com](https://ayniw.com) · 📦 Repo: [d3nn1sVZ/Ayni-agents](https://github.com/d3nn1sVZ/Ayni-agents) · 📜 MIT
+
+---
+
 ## What is *ayni*
 
-*Ayni* (Quechua: reciprocity, mutual help) is the Andean principle that has structured collective work for centuries. Today I help you, tomorrow you help me. Knowledge has always been shared this way. But it was never **paid** this way — payment fees made micro-reciprocity impossible.
+*Ayni* (Quechua: pronounced *eye-nee*) is the Andean principle of reciprocity: **today I help you, tomorrow you help me**. It's the social technology that has held Andean communities together for centuries — and exactly what the Lightning Network finally lets us encode in software, at the scale of one agent query at a time.
 
-Lightning changes that. **AyniAgents brings ayni to the agent economy.**
+**Ayni brings ayni to the agent economy.**
 
 ## What is this
 
-When an AI agent needs specialized knowledge — Peruvian tax law, Spanish data science, regional healthcare — it can call a `tribu` (tribe) plugin. The plugin charges per call via Lightning Network. The payment is then automatically split among all contributors who maintain that tribe's knowledge, in the same second the call happens.
+Ayni is a marketplace of **knowledge tribes** (`tribus`) where small communities of human experts — legal, tax, data science, regional — collectively maintain specialized plugins that AI agents consume via API. Every agent query is a Lightning micropayment that's automatically split, in seconds and at near-zero cost, across all of the tribu's contributors.
 
-Wikipedia + Patreon + Lightning, anchored in an ancient cultural principle. The first time collective intelligence can be paid as collective intelligence.
+We do what Stripe physically cannot: **pay several humans per single sub-cent transaction** — turning collective expertise into an income-generating, agent-native API.
 
-## Why Lightning
+## The problem
 
-Splitting a 100-sat payment across 5 contributors costs nothing on Lightning. The same operation on Stripe would cost more in fees than the payment itself. Collective monetization at micropayment scale is impossible without Lightning.
+AI agents are scaling fast, but value flows back to a handful of model providers and platforms. The human experts whose knowledge powers useful agent outputs are invisible and unpaid. Two structural failures cause this:
+
+1. **Payment rails make collective rewards impossible.** Stripe and card networks charge a $0.30+ minimum per transaction, so splitting one agent query across even 5 contributors is mathematically negative-sum.
+2. **Specialized communities are locked out of the agent economy.** Domain experts — especially in emerging markets — have no programmatic way to monetize their expertise. It stays trapped in PDFs, consulting silos, and LinkedIn posts.
+
+## The solution
+
+Four core components, all shipped in this repo:
+
+### 1. Tribus marketplace
+A discoverable catalog of vertical knowledge plugins. **Two tribus shipped in the MVP:**
+
+| Tribu | Price | Contributors | Splits |
+|---|---|---|---|
+| **Tributario PE** | 100 sat/call | 5 | 40% curador · 30% validador · 10% × 3 contribuidores |
+| **Data Science ES** | 75 sat/call | 3 | 50% curador · 25% × 2 contribuidores |
+
+Tributario PE answers real Peruvian tax questions (IGV, rentas 4ta/5ta, RER, NRUS). Data Science ES covers Spanish/LatAm data science practice.
+
+### 2. L402-protected agent API
+Each plugin exposes an endpoint protected by the **L402 protocol** via MoneyDevKit. The flow:
+
+1. Agent calls `GET /api/ayni/[plugin]?q=...`
+2. Server returns `HTTP 402 Payment Required` + Lightning invoice + macaroon
+3. Agent's wallet pays in seconds
+4. Agent retries with `Authorization: L402 <macaroon>:<preimage>`
+5. Server verifies `sha256(preimage) === paymentHash` and returns the expert answer
+
+### 3. Automatic micro-commission distribution (real onward Lightning)
+On L402 success, [`scripts/demo-flow.sh`](scripts/demo-flow.sh) reads `ayni.splits` from the response and pays each contributor's BOLT12 / Lightning Address via the MDK agent-wallet. The splitter uses **floor-then-residual** rounding to guarantee per-wallet sats sum exactly to the total — no drift.
+
+Splitting one payment across several humans for fractions of a cent is **impossible with cards or Stripe** — Lightning makes it trivial. This is *ayni* implemented in code.
+
+### 4. Live activity dashboard
+A real-time feed (Server-Sent Events, two-phase: `requested` → `settled`) lights up the moment an agent hits the endpoint, then animates the payout fan-out the moment Lightning settlement lands. **Turning the redistribution into something a judge can see, not just read about.**
+
+## USP — what we do that nobody else can
+
+We do the one thing the existing payment stack physically cannot: **split a single sub-cent payment across multiple contributors, in seconds, globally, with no intermediaries.**
+
+- **Stripe:** ~$0.30 minimum fee → splitting across 5 recipients is negative-sum.
+- **Ayni on Lightning:** ~$0.00 fee → distributing 100 sats across 5 contributors costs effectively nothing and settles in seconds, 24/7, across borders, with no contracts, KYC, or subscriptions.
+
+Three positioning axes:
+- **Collective, not individual.** RapidAPI / ElevenLabs monetize individual creators; we monetize *tribus* — the way knowledge actually gets built.
+- **Agent-native by design.** L402 + a public `/.well-known/agent-skill.json` manifest let an autonomous agent discover, price, and pay this API with **zero human in the loop** — no signup, no API keys, no billing setup.
+- **Cultural fit, not just product fit.** Our name and architecture come from *ayni* — an Andean reciprocity principle that already governs how knowledge gets built in the communities we serve.
 
 ## Stack
 
-- Next.js 14 + Tailwind on Vercel
-- MoneyDevKit (L402 paywall + agent wallet)
-- Spark (programmable payment splitting)
-- Bitcoin Lightning mainnet
+- **Lightning rails:** [MoneyDevKit (MDK) v0.16](https://www.npmjs.com/package/@moneydevkit/nextjs) — invoice generation, L402 paywall, payment verification, SATS settlement against a real Lightning node on **Bitcoin mainnet**.
+- **App:** Single **Next.js 15** app (App Router, React 19, TypeScript, Tailwind) deployed to **Vercel**. Same codebase serves the API routes (`/api/ayni/[plugin]`, `/api/payouts/stream`, `/api/demo/[plugin]`, `/api/mdk`) and the frontend dashboard. **Spanish-first** UI (`<html lang="es">`).
+- **Onward redistribution:** Naive splitter implemented in [`scripts/demo-flow.sh`](scripts/demo-flow.sh), real Lightning fan-out per contributor wallet. *Spark was evaluated for native splitting and rejected for time reasons in favour of this naive-but-real fan-out.*
+- **Agent discovery:** Public [`/.well-known/agent-skill.json`](public/.well-known/agent-skill.json) manifest so agents and crawlers ([402index.io](https://402index.io)) can self-discover plugins, pricing, and the L402 flow. Domain verified for 402index.io.
+- **Live dashboard:** Two-phase SSE events (`requested` → `settled`) over Server-Sent Events.
+- **Wallet compatibility:** Phoenix, Alby, Strike, MDK agent-wallet on the agent side.
 
-## Status
+### Critical fix that unlocked the build
+A webpack/runtime bug in the L402 route — the `ws` WebSocket library's `mask()` broke when bundled, and the native `@moneydevkit/lightning-js` `.node` binding cannot be webpacked — was diagnosed and fixed by **externalizing both packages and pinning the route to the Node.js runtime** (commit [`09efcb6`](https://github.com/d3nn1sVZ/Ayni-agents/commit/09efcb6); see [`next.config.mjs`](next.config.mjs)).
 
-Hackathon MVP. Built 2026-04-25.
+## End-to-end validated flow
+
+```
+agent
+  └── GET /api/ayni/tributario-pe?q=igv
+        └── 402 Payment Required + invoice + macaroon
+              └── MDK agent-wallet pays
+                    └── preimage verified (sha256(preimage) === paymentHash)
+                          └── 200 OK + expert answer + ayni.splits
+                                └── scripts/demo-flow.sh
+                                      └── onward Lightning sends to each contributor wallet
+```
+
+## Quick start
+
+```bash
+# install
+npm install
+
+# dev server
+npm run dev
+
+# end-to-end demo (requires a funded MDK agent-wallet)
+bash scripts/demo-flow.sh tributario-pe igv
+```
+
+The dashboard lives at [`/`](app/page.tsx) — single page with marketplace + live activity feed.
+
+## Repo layout
+
+```
+app/                       Next.js 15 App Router (single page + API routes)
+  api/ayni/[plugin]/       L402-protected agent API
+  api/payouts/stream/      Server-Sent Events for live dashboard
+  api/demo/[plugin]/       Demo trigger endpoint
+  api/mdk/                 MoneyDevKit integration
+data/tribus.json           Tribus catalog (price + splits + knowledge)
+public/.well-known/
+  agent-skill.json         Agent-discoverable manifest
+scripts/demo-flow.sh       End-to-end demo + onward Lightning fan-out
+next.config.mjs            ws + lightning-js externals, Node runtime pin
+```
+
+## Adding a new tribu
+
+A config change in [`data/tribus.json`](data/tribus.json) — not a code change. Add an entry with `id`, `name`, `pricePerCallSats`, and `splits[]` (each with `wallet`, `role`, `pct`, `lnAddress`). The marketplace, API, and manifest pick it up automatically.
+
+## Impact
+
+- **For contributors:** turns informal, fragmented expertise into a recurring, programmatic income stream — particularly transformative in emerging markets where domain knowledge is abundant but under-monetized.
+- **For the agent economy:** unlocks vertical, trusted knowledge that general-purpose models can't supply, while solving "how do agents pay for things" without replacing one corporate gatekeeper (Visa) with another (stablecoin issuers).
+- **For Lightning / Bitcoin:** demonstrates a real, non-trivial, agent-native use case that genuinely *requires* Lightning — micro fan-out payments no other rail can deliver. Directly addresses Spiral's mandate of enabling AI agents to earn and pay permissionlessly.
+
+## Real-world extension path
+
+Same infrastructure can host civic plugins (Peruvian tax code maintained by a local CPA tribu), scientific plugins (university thesis repositories), or regional legal tribus — directly relevant to the Hack Nation incubation thesis on Global South AI infrastructure.
 
 ## Team
 
-- Dennis Vivas — Architect & Biz
-- Miluska Pajuelo — Frontend / UX
-- Cindy Rojas — Backend dev
+4 contributors based in Lima, Peru.
+
+- **Dennis Vivas** — Architect & Pitch Lead
+- **Cindy Rojas** — Backend dev
+- **Miluska Pajuelo** — Frontend / UX
+- **Jhoselyn Pajuelo** — Logistics & coordination
+
+## Tags
+
+`Lightning Network` · `Bitcoin` · `L402` · `MoneyDevKit` · `Next.js 15` · `React 19` · `TypeScript` · `Tailwind` · `Vercel` · `Server-Sent Events` · `BOLT11/BOLT12` · `AI Agents` · `Agentic Payments` · `Marketplace` · `Micropayments` · `Knowledge Sharing` · `Reciprocity` · `Ayni` · `Decentralized` · `Web3` · `Fintech` · `Global South`
 
 ## License
 
-MIT
+MIT — created during Hack Nation 5 per challenge rules.
