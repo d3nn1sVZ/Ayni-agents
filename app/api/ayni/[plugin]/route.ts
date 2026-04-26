@@ -1,6 +1,12 @@
 import { withPayment } from '@moneydevkit/nextjs/server'
 import { getTribu, publishPayout } from '@/lib/payouts'
 
+// Lightning node and L402 token verification both need full Node APIs.
+export const runtime = 'nodejs'
+// MDK spins up an embedded Lightning node on cold start (~2s), so allow more
+// than the default 10s on Vercel hobby. 60s covers cold starts comfortably.
+export const maxDuration = 60
+
 type RouteContext = { params: Promise<{ plugin: string }> }
 
 const handler = async (req: Request, ctx: RouteContext) => {
