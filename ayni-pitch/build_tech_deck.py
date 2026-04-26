@@ -82,12 +82,19 @@ def add_accent_bar(slide, left, top, height, *, width=Inches(0.07), color=ACCENT
     return add_rect(slide, left, top, width, height, color)
 
 
+def add_arrow(slide, left, top, width, height, color=ACCENT):
+    arr = slide.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, left, top, width, height)
+    arr.fill.solid()
+    arr.fill.fore_color.rgb = color
+    arr.line.fill.background()
+    return arr
+
+
 def slide_blank(prs):
     return prs.slides.add_slide(prs.slide_layouts[6])
 
 
 def add_timing_badge(slide, text):
-    """Top-right pill showing the timing window for this slide."""
     add_rect(slide, Inches(11.4), Inches(0.4), Inches(1.5), Inches(0.45),
              CARD_HI, corner=True, corner_radius=0.5)
     add_text(slide, text, Inches(11.4), Inches(0.4), Inches(1.5), Inches(0.45),
@@ -97,7 +104,7 @@ def add_timing_badge(slide, text):
 
 def add_eyebrow(slide, text):
     add_accent_bar(slide, Inches(0.6), Inches(0.7), Inches(0.5))
-    add_text(slide, text, Inches(0.85), Inches(0.7), Inches(5), Inches(0.5),
+    add_text(slide, text, Inches(0.85), Inches(0.7), Inches(6), Inches(0.5),
              size=14, bold=True, color=ACCENT, font=HEADER_FONT, anchor="middle",
              line_spacing=1.0)
 
@@ -109,78 +116,183 @@ prs.slide_width = SLIDE_W
 prs.slide_height = SLIDE_H
 
 
-# === Slide 1: Hero card (0:00 – 0:10) ===
+# === Slide 1: Hero card (0:00 – 0:08) ===
 s = slide_blank(prs)
 set_bg(s, BG)
-add_timing_badge(s, "0:00 – 0:10")
+add_timing_badge(s, "0:00 – 0:08")
 
-# Big "ayni"
 add_text(s, "ayni", Inches(0), Inches(1.4), SLIDE_W, Inches(2.6),
          size=160, bold=True, color=ACCENT, font=HEADER_FONT, align="center",
          anchor="middle", line_spacing=1.0)
 
-# One-line description
 add_text(s, "agent-paid expert APIs   ·   over Lightning",
          Inches(0), Inches(4.1), SLIDE_W, Inches(0.8),
          size=32, bold=True, color=TEXT, font=HEADER_FONT, align="center",
          line_spacing=1.0)
 
-# Sub-line
 add_text(s, "AI agents pay sub-cent in Lightning. Payment auto-splits to the contributors who maintain the knowledge.",
          Inches(1.5), Inches(5.2), Inches(10.3), Inches(1.2),
          size=18, color=MUTED, font=BODY_FONT, align="center", italic=True,
          line_spacing=1.3)
 
-# Footer label
 add_text(s, "Hack Nation 5 — Tech Video — 60 sec",
          Inches(0), Inches(6.8), SLIDE_W, Inches(0.4),
          size=12, color=MUTED, font=BODY_FONT, align="center")
 
 
-# === Slide 2: Stack chips (0:10 – 0:18) ===
+# === Slide 2: System Architecture (0:08 – 0:25) ===
 s = slide_blank(prs)
 set_bg(s, BG)
-add_timing_badge(s, "0:10 – 0:18")
-add_eyebrow(s, "STACK")
+add_timing_badge(s, "0:08 – 0:25")
+add_eyebrow(s, "SYSTEM ARCHITECTURE")
 
-add_text(s, "What we built it on.",
-         Inches(0.6), Inches(1.5), Inches(12.13), Inches(1.0),
-         size=44, bold=True, color=TEXT, font=HEADER_FONT)
+add_text(s, "How it fits together.",
+         Inches(0.6), Inches(1.35), Inches(12.13), Inches(0.9),
+         size=34, bold=True, color=TEXT, font=HEADER_FONT)
 
-# 4 stack chips, large, in a 2x2 grid
-chip_specs = [
-    {"big": "Next.js 15", "sub": "App Router · React 19 · Vercel"},
-    {"big": "MoneyDevKit 0.16", "sub": "@moneydevkit/nextjs · withPayment"},
-    {"big": "L402", "sub": "HTTP 402 + Lightning invoice + macaroon"},
-    {"big": "Bitcoin mainnet", "sub": "BOLT11 / BOLT12 · real sats"},
+# --- Diagram canvas ---
+DIAG_TOP = Inches(2.55)
+DIAG_H = Inches(4.3)
+
+# === Column 1: Agent ===
+AGENT_X = Inches(0.6)
+AGENT_W = Inches(2.3)
+agent_box_y = DIAG_TOP + Inches(0.95)
+agent_box_h = Inches(2.4)
+add_rect(s, AGENT_X, agent_box_y, AGENT_W, agent_box_h, CARD, corner=True, corner_radius=0.06)
+add_text(s, "AI Agent", AGENT_X, agent_box_y + Inches(0.35), AGENT_W, Inches(0.6),
+         size=22, bold=True, color=ACCENT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "+ wallet", AGENT_X, agent_box_y + Inches(1.0), AGENT_W, Inches(0.5),
+         size=16, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "MDK · Phoenix\nAlby · Strike", AGENT_X, agent_box_y + Inches(1.55), AGENT_W, Inches(0.7),
+         size=10, color=MUTED, font=MONO_FONT, align="center", line_spacing=1.3)
+
+# === Column 2: Ayni system ===
+AYNI_X = Inches(3.5)
+AYNI_W = Inches(5.9)
+add_rect(s, AYNI_X, DIAG_TOP, AYNI_W, DIAG_H, CARD, corner=True, corner_radius=0.04, line=ACCENT)
+
+# Title bar inside
+add_text(s, "Ayni  —  Next.js 15 on Vercel",
+         AYNI_X + Inches(0.2), DIAG_TOP + Inches(0.15), AYNI_W - Inches(0.4), Inches(0.5),
+         size=14, bold=True, color=ACCENT, font=HEADER_FONT, align="center", line_spacing=1.0,
+         anchor="middle")
+
+# 2x2 sub-grid
+SUB_TOP = DIAG_TOP + Inches(0.75)
+SUB_INNER_X = AYNI_X + Inches(0.25)
+SUB_INNER_W = AYNI_W - Inches(0.5)
+SUB_GAP = Inches(0.2)
+CELL_W = Inches((5.9 - 0.5 - 0.2) / 2)  # ~2.6"
+SUB_INNER_H = DIAG_H - Inches(0.95)
+CELL_H = Inches((4.3 - 0.95 - 0.2) / 2)  # ~1.575"
+
+sub_boxes = [
+    {"row": 0, "col": 0, "title": "manifest", "tag": "discovery",
+     "code": "/.well-known/\nagent-skill.json"},
+    {"row": 0, "col": 1, "title": "API route", "tag": "L402 paywall",
+     "code": "/api/ayni/[plugin]\nMDK · withPayment"},
+    {"row": 1, "col": 0, "title": "splitter", "tag": "fan-out",
+     "code": "scripts/demo-flow.sh\nfloor-then-residual"},
+    {"row": 1, "col": 1, "title": "dashboard", "tag": "live UI",
+     "code": "/api/payouts/stream\nSSE  ·  2-phase"},
 ]
 
-GRID_LEFT = Inches(0.6)
-GRID_TOP = Inches(3.1)
-CELL_W = Inches((12.13 - 0.4) / 2)  # 5.865
-CELL_H = Inches(1.6)
-CELL_GAP_X = Inches(0.4)
-CELL_GAP_Y = Inches(0.3)
+for box in sub_boxes:
+    bx = SUB_INNER_X + (CELL_W + SUB_GAP) * box["col"]
+    by = SUB_TOP + (CELL_H + SUB_GAP) * box["row"]
+    add_rect(s, bx, by, CELL_W, CELL_H, CARD_HI, corner=True, corner_radius=0.06)
+    add_text(s, box["title"], bx + Inches(0.2), by + Inches(0.15),
+             CELL_W - Inches(0.4), Inches(0.4),
+             size=15, bold=True, color=TEXT, font=HEADER_FONT, line_spacing=1.0)
+    add_text(s, box["tag"], bx + Inches(0.2), by + Inches(0.55),
+             CELL_W - Inches(0.4), Inches(0.3),
+             size=10, italic=True, color=ACCENT, font=BODY_FONT, line_spacing=1.0)
+    add_text(s, box["code"], bx + Inches(0.2), by + Inches(0.85),
+             CELL_W - Inches(0.4), CELL_H - Inches(0.95),
+             size=10, color=ACCENT_2, font=MONO_FONT, line_spacing=1.3)
 
-for i, chip in enumerate(chip_specs):
-    row = i // 2
-    col = i % 2
-    x = GRID_LEFT + (CELL_W + CELL_GAP_X) * col
-    y = GRID_TOP + (CELL_H + CELL_GAP_Y) * row
-    add_rect(s, x, y, CELL_W, CELL_H, CARD, corner=True, corner_radius=0.06)
-    add_text(s, chip["big"], x + Inches(0.4), y + Inches(0.25), CELL_W - Inches(0.8), Inches(0.7),
-             size=30, bold=True, color=ACCENT, font=HEADER_FONT, line_spacing=1.0)
-    add_text(s, chip["sub"], x + Inches(0.4), y + Inches(0.95), CELL_W - Inches(0.8), Inches(0.5),
-             size=14, color=MUTED, font=MONO_FONT, line_spacing=1.0)
+# === Column 3: Lightning + Contributors stacked ===
+RIGHT_X = Inches(10.0)
+RIGHT_W = Inches(2.7)
+LN_TOP = DIAG_TOP
+LN_H = Inches(1.95)
+add_rect(s, RIGHT_X, LN_TOP, RIGHT_W, LN_H, CARD, corner=True, corner_radius=0.06)
+add_text(s, "Lightning", RIGHT_X, LN_TOP + Inches(0.25), RIGHT_W, Inches(0.5),
+         size=20, bold=True, color=ACCENT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "Bitcoin mainnet", RIGHT_X, LN_TOP + Inches(0.8), RIGHT_W, Inches(0.4),
+         size=14, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "BOLT11 invoices", RIGHT_X, LN_TOP + Inches(1.25), RIGHT_W, Inches(0.4),
+         size=11, color=MUTED, font=MONO_FONT, align="center", line_spacing=1.0)
+
+CW_TOP = LN_TOP + LN_H + Inches(0.25)
+CW_H = DIAG_TOP + DIAG_H - CW_TOP
+add_rect(s, RIGHT_X, CW_TOP, RIGHT_W, CW_H, CARD, corner=True, corner_radius=0.06)
+add_text(s, "Contributors", RIGHT_X, CW_TOP + Inches(0.2), RIGHT_W, Inches(0.5),
+         size=18, bold=True, color=ACCENT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "BOLT12  /  LN-Address", RIGHT_X, CW_TOP + Inches(0.75), RIGHT_W, Inches(0.4),
+         size=11, color=TEXT, font=MONO_FONT, align="center", line_spacing=1.0)
+
+# Five contributor wallet circles
+mini_y = CW_TOP + Inches(1.35)
+mini_d = Inches(0.34)
+mini_gap = Inches(0.13)
+total_mini_w = mini_d * 5 + mini_gap * 4
+mini_start_x = RIGHT_X + (RIGHT_W - total_mini_w) / 2
+for i in range(5):
+    cx = mini_start_x + (mini_d + mini_gap) * i
+    circ = s.shapes.add_shape(MSO_SHAPE.OVAL, cx, mini_y, mini_d, mini_d)
+    circ.fill.solid()
+    circ.fill.fore_color.rgb = ACCENT_2
+    circ.line.fill.background()
+
+# === Arrows ===
+# Arrow 1: Agent -> Ayni (right-pointing, mid-height)
+ARROW_W = Inches(0.5)
+arr1_y = DIAG_TOP + Inches(2.0)
+add_arrow(s, AGENT_X + AGENT_W + Inches(0.05), arr1_y, ARROW_W - Inches(0.1), Inches(0.32))
+add_text(s, "1.  call",
+         AGENT_X + AGENT_W, arr1_y - Inches(0.4),
+         ARROW_W, Inches(0.3),
+         size=10, bold=True, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "← answer",
+         AGENT_X + AGENT_W, arr1_y + Inches(0.35),
+         ARROW_W, Inches(0.3),
+         size=9, color=MUTED, font=BODY_FONT, align="center", line_spacing=1.0)
+
+# Arrow 2: Ayni -> Lightning (top right zone)
+arr2_y = LN_TOP + Inches(0.85)
+add_arrow(s, AYNI_X + AYNI_W + Inches(0.05), arr2_y, ARROW_W - Inches(0.1), Inches(0.32))
+add_text(s, "2.  invoice",
+         AYNI_X + AYNI_W, arr2_y - Inches(0.4),
+         ARROW_W, Inches(0.3),
+         size=9, bold=True, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.0)
+add_text(s, "← preimage",
+         AYNI_X + AYNI_W, arr2_y + Inches(0.35),
+         ARROW_W, Inches(0.3),
+         size=8, color=MUTED, font=BODY_FONT, align="center", line_spacing=1.0)
+
+# Arrow 3: Ayni splitter -> Contributors (bottom right zone)
+arr3_y = CW_TOP + Inches(0.95)
+add_arrow(s, AYNI_X + AYNI_W + Inches(0.05), arr3_y, ARROW_W - Inches(0.1), Inches(0.32))
+add_text(s, "3.  fan-out",
+         AYNI_X + AYNI_W, arr3_y - Inches(0.4),
+         ARROW_W, Inches(0.3),
+         size=9, bold=True, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.0)
+
+# Footer caption
+add_text(s, "(1) agent calls API   →   (2) MDK issues + verifies Lightning invoice   →   (3) splitter fans out to all contributors",
+         Inches(0.6), Inches(7.0), Inches(12.13), Inches(0.4),
+         size=11, italic=True, color=ACCENT_2, font=BODY_FONT, align="center", line_spacing=1.0)
 
 
-# === Slide 3: L402 flow (0:18 – 0:28) ===
+# === Slide 3: L402 zoom (0:25 – 0:35) ===
 s = slide_blank(prs)
 set_bg(s, BG)
-add_timing_badge(s, "0:18 – 0:28")
-add_eyebrow(s, "ARCHITECTURE")
+add_timing_badge(s, "0:25 – 0:35")
+add_eyebrow(s, "L402 ZOOM")
 
-add_text(s, "The L402 request flow.",
+add_text(s, "Inside the API route.",
          Inches(0.6), Inches(1.3), Inches(12.13), Inches(0.9),
          size=36, bold=True, color=TEXT, font=HEADER_FONT)
 
@@ -210,30 +322,24 @@ for i, node in enumerate(nodes):
     if i < len(nodes) - 1:
         ax = x + BOX_W
         ay = FLOW_TOP + BOX_H / 2 - Inches(0.18)
-        arr = s.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, ax + Inches(0.05), ay,
-                                 ARROW_W - Inches(0.1), Inches(0.36))
-        arr.fill.solid()
-        arr.fill.fore_color.rgb = ACCENT
-        arr.line.fill.background()
+        add_arrow(s, ax + Inches(0.05), ay, ARROW_W - Inches(0.1), Inches(0.36))
     x = x + BOX_W + ARROW_W
 
-# Caption
 add_text(s, "End-to-end on Bitcoin mainnet. Real invoices. Real preimage verification.",
          Inches(0.6), Inches(5.5), Inches(12.13), Inches(0.5),
          size=16, italic=True, color=ACCENT_2, font=BODY_FONT, align="center")
 
 
-# === Slide 4: Splitter (0:28 – 0:42) ===
+# === Slide 4: Splitter (0:35 – 0:46) ===
 s = slide_blank(prs)
 set_bg(s, BG)
-add_timing_badge(s, "0:28 – 0:42")
+add_timing_badge(s, "0:35 – 0:46")
 add_eyebrow(s, "ONWARD FAN-OUT")
 
 add_text(s, "Splitter: floor-then-residual.",
          Inches(0.6), Inches(1.3), Inches(12.13), Inches(0.9),
          size=36, bold=True, color=TEXT, font=HEADER_FONT)
 
-# Left card: pseudocode
 PSEUDO_LEFT = Inches(0.6)
 PSEUDO_TOP = Inches(2.6)
 PSEUDO_W = Inches(7.0)
@@ -254,9 +360,8 @@ add_text(s, pseudo, PSEUDO_LEFT + Inches(0.4), PSEUDO_TOP + Inches(0.35),
          PSEUDO_W - Inches(0.8), PSEUDO_H - Inches(0.7),
          size=16, color=ACCENT_2, font=MONO_FONT, line_spacing=1.45)
 
-# Right card: example
 EX_LEFT = PSEUDO_LEFT + PSEUDO_W + Inches(0.4)
-EX_W = Inches(12.73 - 7.4)  # 5.33
+EX_W = Inches(12.73 - 7.4)
 add_rect(s, EX_LEFT, PSEUDO_TOP, EX_W, PSEUDO_H, CARD_HI, corner=True, corner_radius=0.04)
 
 add_text(s, "Example", EX_LEFT + Inches(0.3), PSEUDO_TOP + Inches(0.25), EX_W - Inches(0.6), Inches(0.5),
@@ -265,13 +370,8 @@ add_text(s, "100 sat → Tributario PE", EX_LEFT + Inches(0.3), PSEUDO_TOP + Inc
          EX_W - Inches(0.6), Inches(0.5),
          size=18, bold=True, color=TEXT, font=HEADER_FONT, line_spacing=1.0)
 
-example_lines = [
-    ("40", "Curador"),
-    ("30", "Validador"),
-    ("10", "Contribuidor"),
-    ("10", "Contribuidor"),
-    ("10", "Contribuidor"),
-]
+example_lines = [("40", "Curador"), ("30", "Validador"),
+                 ("10", "Contribuidor"), ("10", "Contribuidor"), ("10", "Contribuidor")]
 ey = PSEUDO_TOP + Inches(1.45)
 for sats, role in example_lines:
     add_text(s, sats, EX_LEFT + Inches(0.3), ey, Inches(1.2), Inches(0.4),
@@ -284,51 +384,48 @@ add_text(s, "Σ = 100 sat. No drift.",
          EX_LEFT + Inches(0.3), PSEUDO_TOP + Inches(3.1), EX_W - Inches(0.6), Inches(0.4),
          size=14, italic=True, color=GREEN, font=MONO_FONT, line_spacing=1.0)
 
-# Footer caption
 add_text(s, "Each wallet paid by BOLT12 or Lightning Address via the MDK agent-wallet.",
          Inches(0.6), Inches(6.65), Inches(12.13), Inches(0.5),
          size=14, italic=True, color=MUTED, font=BODY_FONT, align="center")
 
 
-# === Slide 5: Critical fix (0:42 – 0:55) ===
+# === Slide 5: Critical fix (0:46 – 0:55) ===
 s = slide_blank(prs)
 set_bg(s, BG)
-add_timing_badge(s, "0:42 – 0:55")
+add_timing_badge(s, "0:46 – 0:55")
 add_eyebrow(s, "IMPLEMENTATION")
 
 add_text(s, "The fix that unlocked end-to-end.",
          Inches(0.6), Inches(1.3), Inches(12.13), Inches(0.9),
          size=34, bold=True, color=TEXT, font=HEADER_FONT)
 
-# Symptom + cause + fix - 3 horizontal cards
 THREE_TOP = Inches(2.55)
 THREE_H = Inches(3.5)
 THREE_W = Inches((12.13 - 0.6) / 3)
 THREE_GAP = Inches(0.3)
 
 cards = [
-    {"label": "SYMPTOM", "title": "L402 route 500'd at runtime", "body": "ws.mask() broke when bundled by webpack. Native lightning-js .node binding can't be webpacked at all."},
-    {"label": "CAUSE", "title": "Webpack vs. native bindings", "body": "Next.js bundled both modules into the route. Native code refused to load; ws was mangled by minification."},
-    {"label": "FIX", "title": "Externalize + Node runtime", "body": "next.config.mjs externals: ['ws','@moneydevkit/lightning-js']. Route handler: export const runtime = 'nodejs'."},
+    {"label": "SYMPTOM", "title": "L402 route 500'd at runtime",
+     "body": "ws.mask() broke when bundled by webpack. Native lightning-js .node binding can't be webpacked at all."},
+    {"label": "CAUSE", "title": "Webpack vs. native bindings",
+     "body": "Next.js bundled both modules into the route. Native code refused to load; ws was mangled by minification."},
+    {"label": "FIX", "title": "Externalize + Node runtime",
+     "body": "next.config.mjs externals: ['ws','@moneydevkit/lightning-js']. Route handler: export const runtime = 'nodejs'."},
 ]
 
 for i, c in enumerate(cards):
     x = Inches(0.6) + (THREE_W + THREE_GAP) * i
     add_rect(s, x, THREE_TOP, THREE_W, THREE_H, CARD, corner=True, corner_radius=0.05)
-    # label pill
     add_rect(s, x + Inches(0.3), THREE_TOP + Inches(0.3), Inches(1.4), Inches(0.4),
              CARD_HI, corner=True, corner_radius=0.5)
     add_text(s, c["label"], x + Inches(0.3), THREE_TOP + Inches(0.3), Inches(1.4), Inches(0.4),
              size=11, bold=True, color=ACCENT, font=HEADER_FONT, align="center", anchor="middle",
              line_spacing=1.0)
-    # title
     add_text(s, c["title"], x + Inches(0.3), THREE_TOP + Inches(0.85), THREE_W - Inches(0.6), Inches(1.0),
              size=18, bold=True, color=TEXT, font=HEADER_FONT, line_spacing=1.15)
-    # body
     add_text(s, c["body"], x + Inches(0.3), THREE_TOP + Inches(2.0), THREE_W - Inches(0.6), Inches(1.4),
              size=13, color=MUTED, font=BODY_FONT, line_spacing=1.3)
 
-# Commit hash footer
 add_text(s, "commit  09efcb6",
          Inches(0.6), Inches(6.55), Inches(12.13), Inches(0.4),
          size=14, color=ACCENT, font=MONO_FONT, align="center", bold=True, line_spacing=1.0)
@@ -342,7 +439,6 @@ s = slide_blank(prs)
 set_bg(s, BG)
 add_timing_badge(s, "0:55 – 1:00")
 
-# Big "Live on mainnet."
 add_text(s, "Live on mainnet.",
          Inches(0), Inches(2.1), SLIDE_W, Inches(1.3),
          size=72, bold=True, color=TEXT, font=HEADER_FONT, align="center", line_spacing=1.05)
@@ -351,7 +447,6 @@ add_text(s, "MIT on GitHub.",
          Inches(0), Inches(3.5), SLIDE_W, Inches(1.3),
          size=72, bold=True, color=ACCENT, font=HEADER_FONT, align="center", line_spacing=1.05)
 
-# URLs
 add_text(s, "ayniw.com",
          Inches(0), Inches(5.6), SLIDE_W, Inches(0.6),
          size=28, color=TEXT, font=MONO_FONT, align="center", line_spacing=1.0)
@@ -360,7 +455,6 @@ add_text(s, "github.com/d3nn1sVZ/Ayni-agents",
          size=24, color=MUTED, font=MONO_FONT, align="center", line_spacing=1.0)
 
 
-# Save
 out = Path("ayni-pitch/Ayni-tech-deck.pptx")
 prs.save(str(out))
 print(f"Wrote {out}  ({out.stat().st_size:,} bytes, {len(prs.slides)} slides)")
