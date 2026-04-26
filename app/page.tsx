@@ -156,7 +156,24 @@ export default function Page() {
       </section>
 
       <footer className="border-t border-ayni-stone/10 py-8 text-center text-xs text-ayni-stone/50">
-        Hack Nation 5 · Spiral Challenge 02 · Built with MoneyDevKit + Lightning
+        <p>Hack Nation 5 · Spiral Challenge 02 · Built with MoneyDevKit + Lightning</p>
+        <p className="mt-2">
+          <a
+            href="/.well-known/agent-skill.json"
+            className="underline decoration-dotted underline-offset-4 hover:text-ayni-earth"
+          >
+            agent-skill manifest
+          </a>
+          {' · '}
+          <a
+            href="https://github.com/d3nn1sVZ/Ayni-agents"
+            className="underline decoration-dotted underline-offset-4 hover:text-ayni-earth"
+            target="_blank"
+            rel="noreferrer"
+          >
+            source on github
+          </a>
+        </p>
       </footer>
     </main>
   )

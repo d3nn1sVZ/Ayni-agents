@@ -68,12 +68,29 @@ function makeEvent(
     tribuName: tribu.name,
     totalSats: tribu.pricePerCallSats,
     query,
-    splits: tribu.splits.map((s) => ({
-      wallet: s.wallet,
-      role: s.role,
-      sats: Math.round(tribu.pricePerCallSats * s.pct),
-    })),
+    splits: splitSats(tribu.pricePerCallSats, tribu.splits),
   }
+}
+
+// Floor each share, then hand the residual sats to the first contributor
+// (typically the curator). Guarantees the per-wallet sats sum exactly to
+// totalSats — Math.round would over- or undershoot when percentages don't
+// divide evenly (e.g. 50/25/25 of 75 = 37.5/18.75/18.75 → rounded 38/19/19 = 76).
+export function splitSats(
+  total: number,
+  splits: Array<{ wallet: string; role: string; pct: number }>,
+): Array<{ wallet: string; role: string; sats: number }> {
+  const floored = splits.map((s) => ({
+    wallet: s.wallet,
+    role: s.role,
+    sats: Math.floor(total * s.pct),
+  }))
+  const distributed = floored.reduce((sum, s) => sum + s.sats, 0)
+  const residual = total - distributed
+  if (residual !== 0 && floored.length > 0) {
+    floored[0]!.sats += residual
+  }
+  return floored
 }
 
 export function publishRequest(tribu: Tribu, query: string) {

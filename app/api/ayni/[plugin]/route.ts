@@ -1,5 +1,10 @@
 import { withPayment } from '@moneydevkit/nextjs/server'
-import { getTribu, publishPayout, publishRequest } from '@/lib/payouts'
+import {
+  getTribu,
+  publishPayout,
+  publishRequest,
+  splitSats,
+} from '@/lib/payouts'
 
 // Lightning node and L402 token verification both need full Node APIs.
 export const runtime = 'nodejs'
@@ -38,11 +43,7 @@ const handler = async (req: Request, ctx: RouteContext) => {
     ayni: {
       paid: tribu.pricePerCallSats,
       currency: 'SAT',
-      splits: tribu.splits.map((s) => ({
-        wallet: s.wallet,
-        role: s.role,
-        sats: Math.round(tribu.pricePerCallSats * s.pct),
-      })),
+      splits: splitSats(tribu.pricePerCallSats, tribu.splits),
     },
   })
 }
