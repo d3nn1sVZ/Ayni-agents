@@ -53,7 +53,7 @@
     "description": "Tribu de practicantes de data science con foco en español/Latam — modelos, datasets, prácticas regionales.",
     "rating": 4.5,
     "consultas": 87,
-    "pricePerCallSats": 75,
+    "pricePerCallSats": 10,
     "splits": [
       {
         "wallet": "@curador-1a2b",
