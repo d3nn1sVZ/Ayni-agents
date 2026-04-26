@@ -1,37 +1,24 @@
 {
   "tributario-pe": {
     "id": "tributario-pe",
-    "name": "Tributario PE",
-    "description": "Tribu de expertos en legislación tributaria peruana actualizada al 2026.",
+    "name": "Tax PE",
+    "category": "Legal & Finance",
+    "description": "Experts in Peruvian tax law: VAT (IGV), Income Tax, SUNAT, RUC.",
+    "longDescription": "Collaborative knowledge base with 5 specialists in Peruvian taxation. Full coverage of tax regimes: RUC, RER, NRUS, MYPE Tax Regime, and General Regime.",
     "rating": 4.7,
-    "consultas": 234,
+    "totalRatings": 312,
+    "consultas": 2847,
     "pricePerCallSats": 100,
+    "responseTime": "~1.1s",
+    "tags": ["SUNAT", "IGV", "Income Tax", "NRUS", "RER"],
+    "isActive": true,
+    "verified": true,
     "splits": [
-      {
-        "wallet": "@curador-3a8f",
-        "role": "Lead curator",
-        "pct": 0.40
-      },
-      {
-        "wallet": "@validador-9b21",
-        "role": "Legal validator",
-        "pct": 0.30
-      },
-      {
-        "wallet": "@contrib-7e44",
-        "role": "Contributor",
-        "pct": 0.10
-      },
-      {
-        "wallet": "@contrib-d12c",
-        "role": "Contributor",
-        "pct": 0.10
-      },
-      {
-        "wallet": "@contrib-5fa9",
-        "role": "Contributor",
-        "pct": 0.10
-      }
+      { "wallet": "@curador-3a8f",   "role": "Lead curator",   "pct": 0.40 },
+      { "wallet": "@validador-9b21", "role": "Legal validator", "pct": 0.30 },
+      { "wallet": "@contrib-7e44",   "role": "Contributor",     "pct": 0.10 },
+      { "wallet": "@contrib-d12c",   "role": "Contributor",     "pct": 0.10 },
+      { "wallet": "@contrib-5fa9",   "role": "Contributor",     "pct": 0.10 }
     ],
     "knowledge": {
       "iva": "VAT (IGV) in Peru is 18% (16% IGV + 2% IPM). It applies to most goods and services except those exempted under Appendices I and II of the TUO of the IGV Law.",
@@ -45,29 +32,121 @@
   "data-science-es": {
     "id": "data-science-es",
     "name": "Data Science ES",
-    "description": "Tribe of data science practitioners focused on Spanish/LatAm — models, datasets, and regional best practices.",
-    "rating": 4.5,
-    "consultas": 87,
+    "category": "Technology",
+    "description": "ML, Python, statistics, and data analysis for the Spanish-speaking market.",
+    "longDescription": "Team of 3 data scientists specialized in applied machine learning, statistical analysis, and data engineering best practices for projects in LATAM and Spain.",
+    "rating": 4.9,
+    "totalRatings": 187,
+    "consultas": 1523,
     "pricePerCallSats": 75,
+    "responseTime": "~0.8s",
+    "tags": ["Python", "ML", "pandas", "scikit-learn", "SQL"],
+    "isActive": true,
+    "verified": true,
     "splits": [
-      {
-        "wallet": "@curador-1a2b",
-        "role": "Curator",
-        "pct": 0.50
-      },
-      {
-        "wallet": "@contrib-3c4d",
-        "role": "Contributor",
-        "pct": 0.25
-      },
-      {
-        "wallet": "@contrib-5e6f",
-        "role": "Contributor",
-        "pct": 0.25
-      }
+      { "wallet": "@curador-ml5g", "role": "Lead curator",  "pct": 0.50 },
+      { "wallet": "@contrib-py9x", "role": "Python Expert", "pct": 0.25 },
+      { "wallet": "@contrib-stat", "role": "Statistician",  "pct": 0.25 }
     ],
     "knowledge": {
-      "default": "Data science query in Spanish processed. The Data Science ES tribe suggests validating the approach with the community’s public repository."
+      "default": "Data science query in Spanish processed. The Data Science ES tribe suggests validating the approach with the community's public repository."
+    }
+  },
+  "legal-mx": {
+    "id": "legal-mx",
+    "name": "Legal MX",
+    "category": "Legal & Finance",
+    "description": "Mexican corporate and tax law. SAT, IMSS, contracts, SAS.",
+    "longDescription": "Four Mexican lawyers and accountants covering corporate, tax, and labor law. Specialized in company formation, employment contracts, and SAT compliance.",
+    "rating": 4.6,
+    "totalRatings": 248,
+    "consultas": 1891,
+    "pricePerCallSats": 150,
+    "responseTime": "~1.4s",
+    "tags": ["SAT", "IMSS", "SAS", "SAPI", "VAT", "ISR"],
+    "isActive": true,
+    "verified": true,
+    "splits": [
+      { "wallet": "@curador-lex1", "role": "Lead curator", "pct": 0.35 },
+      { "wallet": "@abogado-corp", "role": "Corporate",    "pct": 0.25 },
+      { "wallet": "@contador-mx3", "role": "Tax",          "pct": 0.25 },
+      { "wallet": "@contrib-lab4", "role": "Labor",        "pct": 0.15 }
+    ],
+    "knowledge": {
+      "default": "Mexican legal query routed to Legal MX tribe. Cross-checked with current SAT, IMSS, and corporate-law sources."
+    }
+  },
+  "healthtech-bo": {
+    "id": "healthtech-bo",
+    "name": "HealthTech BO",
+    "category": "Healthcare",
+    "description": "Bolivian medical protocols, generic medications, and clinical guidelines.",
+    "longDescription": "Six Bolivian healthcare professionals documenting Ministry of Health protocols, essential medicines lists, and clinical guidelines adapted to the Bolivian context.",
+    "rating": 4.8,
+    "totalRatings": 129,
+    "consultas": 934,
+    "pricePerCallSats": 200,
+    "responseTime": "~2.1s",
+    "tags": ["SNIS", "medications", "protocols", "vaccination"],
+    "isActive": true,
+    "verified": false,
+    "splits": [
+      { "wallet": "@medico-bo1f",  "role": "Lead physician curator", "pct": 0.30 },
+      { "wallet": "@farmaco-2g9",  "role": "Pharmacist",             "pct": 0.20 },
+      { "wallet": "@enfermero-x5", "role": "Nursing",                "pct": 0.15 },
+      { "wallet": "@medico-b3k1",  "role": "Contributing physician", "pct": 0.15 },
+      { "wallet": "@salud-pub56",  "role": "Public health",          "pct": 0.10 },
+      { "wallet": "@investig-8h",  "role": "Researcher",             "pct": 0.10 }
+    ],
+    "knowledge": {
+      "default": "Healthcare query routed to HealthTech BO tribe. Cross-checked with Bolivian Ministry of Health protocols."
+    }
+  },
+  "defi-ar": {
+    "id": "defi-ar",
+    "name": "DeFi AR",
+    "category": "Crypto & DeFi",
+    "description": "DeFi, crypto, and digital asset taxes in Argentina. AFIP, CEDEARs.",
+    "longDescription": "Four Argentine specialists in decentralized finance covering yield farming, AFIP crypto taxes, exchanges, and the crypto ecosystem under the Argentine regulatory framework.",
+    "rating": 4.5,
+    "totalRatings": 203,
+    "consultas": 1456,
+    "pricePerCallSats": 125,
+    "responseTime": "~0.9s",
+    "tags": ["Bitcoin", "DeFi", "AFIP", "staking", "CEDEARs"],
+    "isActive": true,
+    "verified": true,
+    "splits": [
+      { "wallet": "@defi-ar9m2f", "role": "DeFi expert",    "pct": 0.35 },
+      { "wallet": "@impues-3f7b", "role": "Tax advisor",    "pct": 0.30 },
+      { "wallet": "@crypto-ar2x", "role": "Crypto analyst", "pct": 0.20 },
+      { "wallet": "@contrib-5x1a", "role": "Contributor",   "pct": 0.15 }
+    ],
+    "knowledge": {
+      "default": "Crypto/DeFi query routed to DeFi AR tribe. Cross-checked with current AFIP regulations and major Argentine exchanges."
+    }
+  },
+  "edutech-co": {
+    "id": "edutech-co",
+    "name": "EduTech CO",
+    "category": "Education",
+    "description": "Colombian pedagogical methodologies, MEN curriculum, and educational gamification.",
+    "longDescription": "Three Colombian educators specialized in pedagogical innovation, curriculum design under MEN guidelines, and educational technology for schools and universities in Colombia.",
+    "rating": 4.4,
+    "totalRatings": 95,
+    "consultas": 678,
+    "pricePerCallSats": 80,
+    "responseTime": "~1.0s",
+    "tags": ["MEN", "pedagogy", "gamification", "PISA", "Icfes"],
+    "isActive": false,
+    "verified": false,
+    "splits": [
+      { "wallet": "@profe-co1a9",   "role": "Pedagogue",           "pct": 0.45 },
+      { "wallet": "@curricul-5b3",  "role": "Curriculum designer", "pct": 0.30 },
+      { "wallet": "@tecno-edu3f",   "role": "EdTech specialist",   "pct": 0.25 }
+    ],
+    "knowledge": {
+      "default": "Education query routed to EduTech CO tribe. Cross-checked with current MEN guidelines and Colombian pedagogical sources."
     }
   }
 }

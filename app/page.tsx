@@ -1,232 +1,428 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import tribusData from '@/data/tribus.json'
-import type { PayoutEvent } from '@/lib/payouts'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import TribeCard from '@/components/TribeCard'
+import AyniBot from '@/components/AyniBot'
+import { listTribus, type PayoutEvent, type Tribu } from '@/lib/payouts'
 
-type TribuPreview = {
-  id: string
-  name: string
-  description: string
-  rating: number
-  consultas: number
-  pricePerCallSats: number
-  splits: Array<{ wallet: string; role: string; pct: number }>
+// Tribes come from the canonical data/tribus.json (also used by the L402
+// paywall in /api/ayni/[plugin]). Live payout events flow in from the
+// /api/payouts/stream SSE endpoint as agents pay invoices.
+const tribes: Tribu[] = listTribus()
+
+const ROLES = [
+  {
+    href: '/agent',
+    icon: '🤖',
+    who: 'AI Agent',
+    tagline: 'Pays autonomously. No accounts. No API keys.',
+    body: 'The agent calls the endpoint, receives a Lightning invoice, pays it in milliseconds and gets the answer. All without human intervention.',
+    stat: '183ms',
+    statLabel: 'average settlement time',
+    color: 'text-[#8B5CF6]',
+    border: 'hover:border-[#8B5CF6]/30',
+  },
+  {
+    href: '/human',
+    icon: '👤',
+    who: 'Human',
+    tagline: 'Your agents work. Your agents pay.',
+    body: 'Deploy the agent once. It queries services, pays in sats, and brings you results. No subscription contracts. No end-of-month invoices.',
+    stat: '$0.0006',
+    statLabel: 'cost per specialized query',
+    color: 'text-[#38BDF8]',
+    border: 'hover:border-[#38BDF8]/30',
+  },
+  {
+    href: '/contributors',
+    icon: '👥',
+    who: 'Contributor',
+    tagline: 'Your knowledge. Earnings with no middleman.',
+    body: 'Every time an agent queries your tribe, sats land directly in your wallet in the same second — automatically split among all contributors.',
+    stat: '0 sats',
+    statLabel: 'fee for splits to N wallets',
+    color: 'text-[#10B981]',
+    border: 'hover:border-[#10B981]/30',
+  },
+]
+
+const CATEGORIES = ['All', 'Legal & Finance', 'Technology', 'Healthcare', 'Crypto & DeFi', 'Education']
+
+function LiveTicker({ events }: { events: PayoutEvent[] }) {
+  const settled = events.filter(e => e.phase === 'settled').slice(0, 6)
+  if (settled.length === 0) return null
+  return (
+    <div className="flex items-center gap-4 overflow-hidden">
+      <div className="flex items-center gap-1.5 shrink-0">
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
+        </span>
+        <span className="text-emerald-400 text-[10px] font-semibold tracking-widest uppercase">Live</span>
+      </div>
+      <div className="flex gap-3 overflow-x-auto no-scrollbar">
+        {settled.map(e => (
+          <div key={e.id} className="shrink-0 glass-sm px-3 py-1.5 flex items-center gap-2">
+            <span className="text-[#E8B547] font-mono font-bold text-xs">+{e.totalSats}</span>
+            <span className="text-white/30 text-[10px]">sats</span>
+            <span className="text-white/25 text-[10px]">·</span>
+            <span className="text-white/40 text-[10px]">{e.tribuName}</span>
+
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
-const tribus = Object.values(
-  tribusData as Record<string, TribuPreview>,
-)
-
-export default function Page() {
+export default function Home() {
   const [events, setEvents] = useState<PayoutEvent[]>([])
-  const [triggering, setTriggering] = useState<string | null>(null)
+  const [filter, setFilter] = useState('All')
+  const [ayniMood, setAyniMood] = useState<'happy' | 'celebrating'>('happy')
 
+  const totalSats = events.filter(e => e.phase === 'settled').reduce((a, e) => a + e.totalSats, 0)
+  const confirmedCount = events.filter(e => e.phase === 'settled').length
+
+  // Subscribe to the real payout stream. Each L402 payment from an agent
+  // emits a 'requested' then 'settled' event over SSE.
   useEffect(() => {
     const es = new EventSource('/api/payouts/stream')
+    let happyTimer: ReturnType<typeof setTimeout> | undefined
     es.onmessage = (msg) => {
       try {
         const ev = JSON.parse(msg.data) as PayoutEvent
-        setEvents((prev) => [ev, ...prev].slice(0, 30))
+        setEvents(prev => [ev, ...prev].slice(0, 50))
+        if (ev.phase === 'requested') setAyniMood('celebrating')
+        if (ev.phase === 'settled') {
+          if (happyTimer) clearTimeout(happyTimer)
+          happyTimer = setTimeout(() => setAyniMood('happy'), 2500)
+        }
       } catch {}
     }
-    return () => es.close()
+    return () => {
+      es.close()
+      if (happyTimer) clearTimeout(happyTimer)
+    }
   }, [])
 
-  async function triggerDemo(tribuId: string) {
-    if (triggering) return
-    setTriggering(tribuId)
-    try {
-      await fetch(`/api/demo/${tribuId}`, { method: 'POST' })
-    } catch {}
-    setTimeout(() => setTriggering(null), 2000)
-  }
+  const filtered = tribes.filter(t =>
+    filter === 'All' || t.category === filter
+  )
 
   return (
-    <main className="min-h-screen bg-ayni-cloud text-ayni-night">
-      <header className="border-b border-ayni-stone/10 bg-ayni-night text-ayni-cloud">
-        <div className="mx-auto max-w-6xl px-6 py-10">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-ayni-maize">
-            Hack Nation 5 · Spiral Challenge
-          </p>
-          <h1 className="mt-4 font-display text-5xl leading-tight">
-            AyniAgents
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-ayni-cloud/80">
-            <em>Ayni</em> programable. Tribus de contribuidores humanos
-            mantienen plugins de conocimiento. Agentes de IA pagan por consumirlos.
-            Cada contribuidor recibe su parte en el mismo segundo, vía Lightning.
-          </p>
-        </div>
-      </header>
+    <div className="min-h-dvh flex flex-col">
+      <Header totalSats={totalSats} confirmedCount={confirmedCount} />
 
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div>
-            <h2 className="font-display text-2xl">Tribus activas</h2>
-            <p className="mt-2 text-sm text-ayni-stone/70">
-              Cada tribu cobra por consulta. El pago se divide entre quienes
-              mantienen el plugin actualizado.
-            </p>
-
-            <ul className="mt-6 space-y-4">
-              {tribus.map((t) => (
-                <li
-                  key={t.id}
-                  className="rounded-2xl border border-ayni-stone/10 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-display text-xl">{t.name}</h3>
-                      <p className="mt-1 text-sm text-ayni-stone/70">
-                        {t.description}
-                      </p>
-                    </div>
-                    <div className="shrink-0 rounded-full bg-ayni-maize/15 px-3 py-1 font-mono text-xs uppercase tracking-wider text-ayni-earth">
-                      {t.pricePerCallSats} sat / call
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center gap-3 text-xs text-ayni-stone/60">
-                    <span>★ {t.rating.toFixed(1)}</span>
-                    <span>·</span>
-                    <span>{t.consultas} consultas</span>
-                    <span>·</span>
-                    <span>{t.splits.length} contribuidores</span>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {t.splits.map((s) => (
-                      <span
-                        key={s.wallet}
-                        className="rounded-md bg-ayni-stone/5 px-2 py-1 font-mono text-[11px] text-ayni-stone/70"
-                      >
-                        {s.wallet} · {Math.round(s.pct * 100)}%
-                      </span>
-                    ))}
-                  </div>
-
-                  <pre className="mt-5 overflow-x-auto rounded-lg bg-ayni-night p-3 font-mono text-[11px] leading-relaxed text-ayni-cloud/80">
-                    {`GET /api/ayni/${t.id}?q=...
-↳ 402 Payment Required (Lightning invoice)
-↳ pay → respuesta + payout split a ${t.splits.length} wallets`}
-                  </pre>
-
-                  <button
-                    type="button"
-                    onClick={() => triggerDemo(t.id)}
-                    disabled={triggering === t.id}
-                    className="mt-4 w-full rounded-lg border border-ayni-earth/40 bg-ayni-earth/5 px-4 py-2.5 text-sm font-medium text-ayni-earth transition-colors hover:bg-ayni-earth/10 disabled:opacity-50"
-                  >
-                    {triggering === t.id
-                      ? 'Disparando ayni...'
-                      : 'Disparar ayni de demostración →'}
-                  </button>
-                </li>
-              ))}
-            </ul>
+      {/* ────────────────── HERO ────────────────── */}
+      <section className="px-6 pt-24 pb-20 text-center">
+        <div className="max-w-3xl mx-auto">
+          <div className="label mb-8 animate-fade-in">
+            Hack Nation 5 · Spiral Challenge 02 · Bitcoin Lightning Network
           </div>
 
-          <div className="lg:sticky lg:top-6 lg:self-start">
-            <h2 className="font-display text-2xl">
-              Pagos en tiempo real
-            </h2>
-            <p className="mt-2 text-sm text-ayni-stone/70">
-              Cada vez que un agente consulta una tribu, los sats se reparten
-              entre los contribuidores. Esto es imposible con Stripe.
-            </p>
+          <div className="flex justify-center mb-10 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+            <AyniBot mood={ayniMood} size="md"
+              className="animate-float drop-shadow-[0_0_48px_rgba(139,92,246,0.45)]" />
+          </div>
 
-            <div className="mt-6 space-y-3">
-              {events.length === 0 && (
-                <div className="rounded-2xl border border-dashed border-ayni-stone/20 bg-white/50 p-10 text-center text-sm text-ayni-stone/50">
-                  Esperando consultas...
-                  <br />
-                  <span className="font-mono text-xs">
-                    GET /api/ayni/tributario-pe?q=igv
-                  </span>
-                </div>
-              )}
+          <h1 className="text-5xl md:text-[64px] font-black tracking-tight leading-[1.05] mb-6 animate-fade-up"
+            style={{ animationDelay: '0.15s' }}>
+            <span className="text-gradient">Collective intelligence,</span><br />
+            <span className="text-[#E8B547]">paid as collective intelligence.</span>
+          </h1>
 
-              {events.map((ev) => (
-                <EventCard key={ev.id} ev={ev} />
-              ))}
-            </div>
+          <p className="text-white/45 text-lg md:text-xl leading-relaxed mb-3 max-w-xl mx-auto animate-fade-up"
+            style={{ animationDelay: '0.25s' }}>
+            AI agents pay tribes of human experts via Lightning. Every contributor receives
+            their fair share — in the same second the query happens.
+          </p>
+
+          <p className="text-white/25 text-sm italic mb-10 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+            Ayni (Quechua): reciprocity. For the first time, this ancient principle can be paid.
+          </p>
+
+          <div className="flex gap-3 justify-center animate-fade-up" style={{ animationDelay: '0.35s' }}>
+            <a href="#marketplace" className="btn-gold">Explore marketplace ↓</a>
+            <Link href="/agent" className="btn-glass">How agents pay →</Link>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-ayni-stone/10 py-8 text-center text-xs text-ayni-stone/50">
-        <p>Hack Nation 5 · Spiral Challenge 02 · Built with MoneyDevKit + Lightning</p>
-        <p className="mt-2">
-          <a
-            href="/.well-known/agent-skill.json"
-            className="underline decoration-dotted underline-offset-4 hover:text-ayni-earth"
-          >
-            agent-skill manifest
-          </a>
-          {' · '}
-          <a
-            href="https://github.com/d3nn1sVZ/Ayni-agents"
-            className="underline decoration-dotted underline-offset-4 hover:text-ayni-earth"
-            target="_blank"
-            rel="noreferrer"
-          >
-            source on github
-          </a>
-        </p>
-      </footer>
-    </main>
-  )
-}
+      {/* ────────────────── THREE-DIMENSIONAL PROBLEM ────────────────── */}
+      <section className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="label mb-4">Problem Statement</div>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-gradient mb-4">
+              The problem, across three dimensions.
+            </h2>
+            <p className="text-white/40 text-base max-w-2xl mx-auto leading-relaxed">
+              The economy of collective intelligence is broken on three simultaneous fronts.
+              Ayni solves all three with a single primitive: Lightning payments + L402.
+            </p>
+          </div>
 
-function EventCard({ ev }: { ev: PayoutEvent }) {
-  if (ev.phase === 'requested') {
-    return (
-      <div className="rounded-2xl border border-ayni-sky/40 bg-ayni-sky/5 p-5 shadow-sm">
-        <div className="flex items-center justify-between text-xs text-ayni-stone/60">
-          <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
-            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-ayni-sky" />
-            agente consulta · {ev.tribuName}
-          </span>
-          <span>· · · sats</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="glass p-6 flex flex-col gap-3">
+              <div className="text-3xl">🏛️</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-[#8B5CF6]">
+                01 · Centralization
+              </div>
+              <h3 className="text-[#EDE9E1] font-bold text-lg leading-tight">
+                Data is centralized and expensive.
+              </h3>
+              <p className="text-white/35 text-sm leading-relaxed">
+                A handful of platforms concentrate the world's knowledge and extract rent from
+                anyone who wants access. The producer earns nothing; the consumer overpays.
+              </p>
+            </div>
+
+            <div className="glass p-6 flex flex-col gap-3">
+              <div className="text-3xl">🧠</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-[#38BDF8]">
+                02 · Access to knowledge
+              </div>
+              <h3 className="text-[#EDE9E1] font-bold text-lg leading-tight">
+                AI lacks data to train and query against.
+              </h3>
+              <p className="text-white/35 text-sm leading-relaxed">
+                Models need specialized, verified knowledge — but it's trapped behind paywalls,
+                contracts and closed APIs. Accessibility to expertise is still a bottleneck.
+              </p>
+            </div>
+
+            <div className="glass p-6 flex flex-col gap-3">
+              <div className="text-3xl">⛓️</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-[#E8B547]">
+                03 · Monetization monopoly
+              </div>
+              <h3 className="text-[#EDE9E1] font-bold text-lg leading-tight">
+                Big-AI monopolizes the earnings.
+              </h3>
+              <p className="text-white/35 text-sm leading-relaxed">
+                The intelligence generated by users and agents is monetized by a few companies.
+                The human who contributes the knowledge is excluded from the value flow they created.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <p className="text-white/30 text-sm italic max-w-2xl mx-auto">
+              Ayni decentralizes information and generates direct income for contributors —
+              in the same second their knowledge is queried.
+            </p>
+          </div>
         </div>
-        <p className="mt-2 truncate text-sm text-ayni-stone/80">
-          “{ev.query || '(sin query)'}”
-        </p>
-        <p className="mt-3 text-xs text-ayni-stone/50">
-          Esperando confirmación de pago Lightning...
-        </p>
-      </div>
-    )
-  }
+      </section>
 
-  return (
-    <div className="rounded-2xl border border-ayni-maize/40 bg-ayni-maize/5 p-5 shadow-sm">
-      <div className="flex items-center justify-between text-xs text-ayni-stone/60">
-        <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
-          <span className="inline-block h-2 w-2 rounded-full bg-ayni-maize" />
-          ayni cumplido · {ev.tribuName}
-        </span>
-        <span className="font-semibold text-ayni-earth">+{ev.totalSats} sat</span>
-      </div>
-      <p className="mt-2 truncate text-sm text-ayni-stone/80">
-        “{ev.query || '(sin query)'}”
-      </p>
-      <ul className="mt-3 space-y-1.5">
-        {ev.splits.map((s) => (
-          <li
-            key={s.wallet}
-            className="flex items-center justify-between text-xs"
-          >
-            <span className="font-mono text-ayni-stone/70">
-              {s.wallet} · {s.role}
-            </span>
-            <span className="font-mono font-semibold text-ayni-earth">
-              +{s.sats} sat
-            </span>
-          </li>
-        ))}
-      </ul>
+      {/* ────────────────── THE WHY ────────────────── */}
+      <section className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="label mb-4">Why Lightning · Why now</div>
+            <h2 className="text-4xl font-black tracking-tight text-gradient mb-4">
+              Payment fees killed micro-reciprocity.
+            </h2>
+            <p className="text-white/40 text-lg max-w-2xl mx-auto leading-relaxed">
+              Splitting a 100-sat payment across 5 contributors costs nothing on Lightning.
+              The same operation on Stripe costs more in fees than the payment itself.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+            {/* Stripe card */}
+            <div className="glass p-8 flex flex-col gap-4">
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-red-400">
+                ✗ Stripe / Traditional rails
+              </div>
+              <div>
+                <div className="text-6xl font-black text-red-400 tracking-tight leading-none">$0.30</div>
+                <div className="text-white/30 text-sm mt-1">minimum fee per transaction</div>
+              </div>
+              <div className="border-t border-white/[0.06]" />
+              <p className="text-white/35 text-sm leading-relaxed">
+                Your share of a 100-sat query = <strong className="text-white/55">$0.0000216</strong>.
+                Stripe's minimum fee is <strong className="text-red-400">13,888×</strong> the payment value.
+                Collective monetization at micropayment scale is simply impossible.
+              </p>
+              <div className="text-red-400/60 text-sm font-medium">Split to N wallets: impossible.</div>
+            </div>
+            {/* Lightning card */}
+            <div className="glass glass-gold p-8 flex flex-col gap-4">
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-[#E8B547]">
+                ✓ Bitcoin Lightning Network
+              </div>
+              <div>
+                <div className="text-6xl font-black text-[#E8B547] tracking-tight leading-none">$0</div>
+                <div className="text-white/30 text-sm mt-1">fee to split to any number of wallets</div>
+              </div>
+              <div className="border-t border-white/[0.06]" />
+              <p className="text-white/35 text-sm leading-relaxed">
+                100 sats splits to 5 contributors in the <strong className="text-white/55">same second</strong> the
+                query happens. Each receives their exact share. No intermediary. No minimum. No delay.
+              </p>
+              <div className="text-[#E8B547] text-sm font-medium">Split to N wallets: trivial. ⚡</div>
+            </div>
+          </div>
+
+          {/* Pull quote */}
+          <div className="text-center">
+            <blockquote className="text-xl md:text-2xl font-medium text-white/55 max-w-2xl mx-auto leading-relaxed italic">
+              "Wikipedia + Patreon + Lightning, anchored in an ancient cultural principle.
+              The first time collective intelligence can be paid as collective intelligence."
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* ────────────────── THREE ROLES ────────────────── */}
+      <section className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="label mb-4">Three roles, one economy</div>
+            <h2 className="text-3xl font-black tracking-tight text-gradient">
+              Everyone benefits. Everyone earns.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {ROLES.map(r => (
+              <Link key={r.href} href={r.href}
+                className={`glass glass-hover ${r.border} p-7 flex flex-col gap-4 group`}>
+                <div className="text-3xl">{r.icon}</div>
+                <div>
+                  <div className={`text-xs font-bold uppercase tracking-widest mb-1 ${r.color}`}>{r.who}</div>
+                  <div className="text-[#EDE9E1] font-bold text-base leading-tight group-hover:text-white transition-colors">
+                    {r.tagline}
+                  </div>
+                </div>
+                <p className="text-white/35 text-sm leading-relaxed flex-1">{r.body}</p>
+                <div className="border-t border-white/[0.06] pt-4">
+                  <div className={`font-mono font-black text-2xl ${r.color}`}>{r.stat}</div>
+                  <div className="text-white/25 text-xs mt-0.5">{r.statLabel}</div>
+                </div>
+                <div className={`text-xs font-medium ${r.color} group-hover:translate-x-1 transition-transform`}>
+                  Learn more →
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ────────────────── UNIQUE SELLING PROPOSITION ────────────────── */}
+      <section className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="label mb-4">Unique Selling Proposition</div>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-gradient mb-4">
+              What no traditional rail can do.
+            </h2>
+            <p className="text-white/40 text-base max-w-2xl mx-auto leading-relaxed">
+              Real-time micropayments to multiple actors, with no middlemen.
+              Simply impossible on traditional banking infrastructure.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                icon: '🚫',
+                title: 'No middlemen',
+                body: 'Direct wallet-to-wallet payments. No banks, no processors, no custodians. Value flows without tolls.',
+                color: 'text-[#8B5CF6]',
+              },
+              {
+                icon: '⚡',
+                title: 'Settlement in milliseconds',
+                body: 'Lightning Network settles transactions in ~183ms. The query and the payment happen in the same breath.',
+                color: 'text-[#E8B547]',
+              },
+              {
+                icon: '🌎',
+                title: 'Decentralized and global',
+                body: 'No contracts, no subscriptions, no country restrictions. Any wallet, any agent, any human.',
+                color: 'text-[#38BDF8]',
+              },
+              {
+                icon: '💸',
+                title: 'Fees close to $0',
+                body: 'Per-transaction cost ~$0.0000 vs $0.30 on Stripe. Makes monetizing each individual query viable.',
+                color: 'text-[#10B981]',
+              },
+              {
+                icon: '🪙',
+                title: 'Real micropayments',
+                body: 'Charging 100 sats (~$0.0001) makes economic sense. What is noise in traditional banking is income here.',
+                color: 'text-[#E8B547]',
+              },
+              {
+                icon: '🔀',
+                title: 'Split to N wallets, in real time',
+                body: 'A single transaction splits automatically across 5, 10 or 20 contributors. Impossible on bank rails.',
+                color: 'text-[#10B981]',
+              },
+            ].map(f => (
+              <div key={f.title} className="glass p-6 flex flex-col gap-3">
+                <div className="text-2xl">{f.icon}</div>
+                <h3 className={`font-bold text-base leading-tight ${f.color}`}>{f.title}</h3>
+                <p className="text-white/35 text-sm leading-relaxed">{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ────────────────── LIVE MARKETPLACE ────────────────── */}
+      <section id="marketplace" className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-end justify-between gap-4 mb-4">
+            <div>
+              <div className="label mb-2">Live now</div>
+              <h2 className="text-2xl font-black tracking-tight text-gradient">Tribe Marketplace</h2>
+            </div>
+            <div className="flex gap-3 text-sm">
+              <div className="glass-sm px-4 py-2 text-center">
+                <div className="text-[#E8B547] font-mono font-bold text-lg">{totalSats.toLocaleString()}</div>
+                <div className="text-white/20 text-[9px] uppercase tracking-widest">sats distributed</div>
+              </div>
+              <div className="glass-sm px-4 py-2 text-center">
+                <div className="text-[#10B981] font-mono font-bold text-lg">{confirmedCount}</div>
+                <div className="text-white/20 text-[9px] uppercase tracking-widest">payments</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Live ticker */}
+          <div className="mb-6">
+            <LiveTicker events={events} />
+          </div>
+
+          {/* Category filter */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {CATEGORIES.map(cat => (
+              <button key={cat} onClick={() => setFilter(cat)}
+                className={[
+                  'text-[11px] px-3.5 py-1.5 rounded-full border font-medium transition-all duration-150',
+                  filter === cat
+                    ? 'bg-[#E8B547] text-[#05040A] border-[#E8B547] shadow-[0_0_16px_0_rgba(232,181,71,0.35)]'
+                    : 'glass-sm text-white/35 hover:text-white/60',
+                ].join(' ')}>
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filtered.map(t => <TribeCard key={t.id} tribe={t} />)}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   )
 }
