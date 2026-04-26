@@ -122,6 +122,7 @@ export async function GET() {
     ],
     discovery: {
       crawlable: true,
+      llmstxt: 'https://ayniw.com/llms.txt',
       indexes: [
         'submitted to https://402index.io',
         'aligned with https://docs.moneydevkit.com',

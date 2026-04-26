@@ -65,6 +65,25 @@ export default function Footer() {
                 ))}
               </div>
             </div>
+
+            <div className="border-t border-white/[0.06] mt-6 pt-5">
+              <div className="label mb-3">For agents</div>
+              <div className="flex flex-col gap-2">
+                <a href="/llms.txt"
+                  className="text-white/30 text-sm hover:text-white/60 transition-colors">
+                  /llms.txt — agent quick-start
+                </a>
+                <a href="/.well-known/agent-skill.json"
+                  className="text-white/30 text-sm hover:text-white/60 transition-colors">
+                  agent-skill manifest (JSON)
+                </a>
+                <a href="https://github.com/d3nn1sVZ/Ayni-agents"
+                  target="_blank" rel="noreferrer"
+                  className="text-white/30 text-sm hover:text-white/60 transition-colors">
+                  source on GitHub
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Ayni cultural note */}
