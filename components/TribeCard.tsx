@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import type { Tribu } from '@/lib/types'
 
 const CAT_GLOW: Record<string, string> = {
@@ -31,6 +34,24 @@ function Stars({ rating }: { rating: number }) {
 export default function TribeCard({ tribe }: { tribe: Tribu }) {
   const catGlow = CAT_GLOW[tribe.category] ?? ''
   const catBadge = CAT_BADGE[tribe.category] ?? 'bg-white/5 text-white/40 border-white/10'
+
+  // CTA fires the demo trigger endpoint, which simulates the full L402
+  // lifecycle (a "requested" SSE event then a "settled" event 1.6s later).
+  // The dashboard live-feed picks both up and animates the redistribution
+  // — same code path that real agent payments would emit.
+  const [status, setStatus] = useState<'idle' | 'pending' | 'ok' | 'err'>('idle')
+  async function handleQuery() {
+    if (status === 'pending') return
+    setStatus('pending')
+    try {
+      const res = await fetch(`/api/demo/${tribe.id}`, { method: 'POST' })
+      setStatus(res.ok ? 'ok' : 'err')
+    } catch {
+      setStatus('err')
+    }
+    // Reset back to idle so the button can be clicked again for repeat demos.
+    setTimeout(() => setStatus('idle'), 2200)
+  }
 
   return (
     <div className={[
@@ -125,11 +146,23 @@ export default function TribeCard({ tribe }: { tribe: Tribu }) {
 
       {/* ── CTA ── */}
       {tribe.isActive && (
-        <button className="mt-auto w-full py-2.5 rounded-2xl border border-white/[0.08]
-                           text-white/40 text-sm font-medium
-                           hover:border-[#E8B547]/40 hover:text-[#E8B547] hover:bg-[#E8B547]/[0.04]
-                           transition-all duration-200">
-          Query tribe →
+        <button
+          type="button"
+          onClick={handleQuery}
+          disabled={status === 'pending'}
+          aria-busy={status === 'pending'}
+          className={[
+            'mt-auto w-full py-2.5 rounded-2xl border text-sm font-medium transition-all duration-200',
+            status === 'idle'    && 'border-white/[0.08] text-white/40 hover:border-[#E8B547]/40 hover:text-[#E8B547] hover:bg-[#E8B547]/[0.04]',
+            status === 'pending' && 'border-[#8B5CF6]/40 text-[#A78BFA] bg-[#8B5CF6]/[0.06] cursor-wait',
+            status === 'ok'      && 'border-[#10B981]/40 text-[#10B981] bg-[#10B981]/[0.06]',
+            status === 'err'     && 'border-rose-400/40 text-rose-300 bg-rose-400/[0.06]',
+          ].filter(Boolean).join(' ')}
+        >
+          {status === 'idle'    && 'Query tribe →'}
+          {status === 'pending' && 'Sending Lightning invoice…'}
+          {status === 'ok'      && 'Ayni fulfilled · check the live feed →'}
+          {status === 'err'     && 'Failed — try again'}
         </button>
       )}
     </div>
