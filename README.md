@@ -86,7 +86,7 @@ Three positioning axes:
 ## Stack
 
 - **Lightning rails:** [MoneyDevKit (MDK) v0.16](https://www.npmjs.com/package/@moneydevkit/nextjs) — invoice generation, L402 paywall, payment verification, SATS settlement against a real Lightning node on **Bitcoin mainnet**.
-- **App:** Single **Next.js 15** app (App Router, React 19, TypeScript, Tailwind) deployed to **Vercel**. Same codebase serves the API routes (`/api/ayni/[plugin]`, `/api/payouts/stream`, `/api/demo/[plugin]`, `/api/mdk`) and the frontend dashboard. **Spanish-first** UI (`<html lang="es">`).
+- **App:** Single **Next.js 15** app (App Router, React 19, TypeScript, Tailwind) deployed to **Vercel**. Same codebase serves the API routes (`/api/ayni/[plugin]`, `/api/payouts/stream`, `/api/demo/[plugin]`, `/api/mdk`) and the frontend dashboard. **English UI** (`<html lang="en">`) for the MIT presentation; `tribu` retained as the cultural unit name. Knowledge content for `tributario-pe` stays in Spanish because that is the tribu's authentic domain (Peruvian tax law).
 - **Onward redistribution:** Naive splitter implemented in [`scripts/demo-flow.sh`](scripts/demo-flow.sh), real Lightning fan-out per contributor wallet. *Spark was evaluated for native splitting and rejected for time reasons in favour of this naive-but-real fan-out.*
 - **Agent discovery:** Public [`/.well-known/agent-skill.json`](public/.well-known/agent-skill.json) manifest so agents and crawlers ([402index.io](https://402index.io)) can self-discover plugins, pricing, and the L402 flow. Domain verified for 402index.io.
 - **Live dashboard:** Two-phase SSE events (`requested` → `settled`) over Server-Sent Events.
