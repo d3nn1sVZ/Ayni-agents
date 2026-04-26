@@ -139,6 +139,85 @@ A config change in [`data/tribus.json`](data/tribus.json) — not a code change.
 
 Same infrastructure can host civic plugins (Peruvian tax code maintained by a local CPA tribu), scientific plugins (university thesis repositories), or regional legal tribus — directly relevant to the Hack Nation incubation thesis on Global South AI infrastructure.
 
+## Pitching this — exactly what to say
+
+Two pre-written scripts. Read **verbatim**. Stress the **bold** words. Don't fill silence at the end — let the audience speak first.
+
+> 📝 Full versions, with red flags + delivery notes: [pitch-2min.md](ayni-pitch/pitch-2min.md), [pitch-tech-1min.md](ayni-pitch/pitch-tech-1min.md), [pitch-1min.md](ayni-pitch/pitch-1min.md)
+> 📊 Decks (with these scripts in the speaker notes): [Ayni-pitch-deck.pptx](ayni-pitch/Ayni-pitch-deck.pptx) (8 slides), [Ayni-tech-deck.pptx](ayni-pitch/Ayni-tech-deck.pptx) (6 slides)
+
+### The 2-minute investor pitch (Spiral judges, demo day)
+
+**[0:00 — open. Look up. Slow down.]**
+
+> Ayni is a marketplace where AI agents pay tribes of human experts to answer specialized questions, over Lightning Network. An accounting agent calls our API, asks "what's the IGV rate in Peru," and pays 100 sats. In the same second, that payment auto-splits across all five contributors who maintain Peru's tax tribe — forty sats to the curador, thirty to the validador, ten each to three contribuidores.
+>
+> **Stripe physically cannot do this.** A 30-cent minimum fee makes splitting a sub-cent payment across five humans negative-sum. Lightning makes it free, instant, and global. **That's the entire wedge.**
+
+*👉 Pause one full second after "Stripe physically cannot do this." Let it land.*
+
+**[0:35 — Problem. Direct. No filler.]**
+
+> AI agents are scaling fast. The model providers get paid. The platforms get paid. The human experts whose knowledge powers the answers — the Lima CPA, the Spanish data scientist, the regional lawyer — get nothing. Not because nobody wants to pay them. **Because the rails can't.**
+
+**[0:55 — Solution. Show the demo.]**
+
+> We built it on **Bitcoin mainnet** during the hackathon. An agent hits our endpoint, gets a 402 Payment Required with a Lightning invoice and an L402 macaroon, pays it in seconds, retries with the preimage, and gets the expert answer. Then a second Lightning fan-out sends each contributor their share. **Two tribes live today: Peruvian tax law and Spanish data science.** Public manifest at slash-well-known so any agent can self-discover. **Live at ayniw.com. MIT on GitHub.**
+
+**[1:25 — Why now / why us.]**
+
+> Why now: L402 just got ergonomic, agents went from demo to production this year, and Lightning is mature. Why us: we're four builders in Lima, and the communities we're monetizing — Peruvian contadores, Latam data scientists — are **people we can call by name today**.
+
+**[1:50 — The ask. Confident. Stop talking.]**
+
+> Ayni is the Quechua word for reciprocity. We've encoded it in software. **We're asking Spiral to back the only payment rail that can.**
+
+*👉 Stop. Don't fill the silence. Let the judge speak first.*
+
+---
+
+### The 60-second tech video (Hack Nation submission, screen-recorded)
+
+Record this with [Ayni-tech-deck.pptx](ayni-pitch/Ayni-tech-deck.pptx) on screen. Click slides on the timing marks below.
+
+**[0:00 — Slide 1, hero card]**
+
+> Ayni: AI agents pay sub-cent in Lightning, and every payment auto-splits to the contributors who maintain the knowledge.
+
+**[0:08 — Slide 2, the architecture diagram. Point at each zone as you talk.]**
+
+> *(point at the **Agent** column on the left)* Stack: **Next.js 15** on Vercel, **MoneyDevKit 0.16**, **L402** over **Bitcoin mainnet**.
+>
+> *(sweep right, into the **Ayni** middle container)* An agent discovers our endpoints through a public **agent-skill manifest**, then calls the API.
+>
+> *(point at arrow 2 — Ayni → Lightning)* The API returns a 402 with a Lightning invoice and a macaroon. The agent's wallet pays. We verify the preimage and return the answer.
+>
+> *(point at arrow 3 — Splitter → Contributors)* Then the **splitter** fans out real Lightning sends to each contributor's BOLT12 or Lightning Address.
+
+**[0:25 — Slide 3, L402 zoom]**
+
+> Inside the API route: MDK returns the 402 with the Lightning invoice and macaroon. The agent retries with the preimage. We verify **SHA-256** against the payment hash before answering.
+
+**[0:35 — Slide 4, splitter]**
+
+> The splitter uses **floor-then-residual** rounding — per-wallet sats sum exactly to the total. A 100-sat call to Tributario PE pays **40-30-10-10-10** to five wallets in seconds.
+
+**[0:46 — Slide 5, the fix]**
+
+> Critical fix: the WebSocket lib and the native Lightning binding broke under webpack. We **externalized** them and pinned the route to the **Node.js runtime**. That commit unlocked end-to-end.
+
+**[0:55 — Slide 6, closing]**
+
+> **Live on mainnet at ayniw.com. MIT on GitHub.**
+
+---
+
+### Three things, every time
+
+1. **Pause after the wedge line.** The single most powerful sentence is *"Stripe physically cannot do this."* If the room knows payments, they will fact-check you in their head and conclude you're right. That's the moment the pitch is won. Don't trample it.
+2. **End on the ask. Then stop.** The next person to talk should not be you.
+3. **If you have only 30 seconds:** *"Ayni lets AI agents pay tribes of human experts via Lightning. One agent payment auto-splits across all the contributors in the same second. Stripe can't do this — the fees are bigger than the payment. We built it on Bitcoin mainnet during the hackathon. Live at ayniw.com."* (54 words.)
+
 ## Team
 
 4 contributors based in Lima, Peru.
