@@ -19,7 +19,18 @@ export type Tribu = {
   rating: number
   consultas: number
   pricePerCallSats: number
-  splits: Array<{ wallet: string; role: string; pct: number }>
+  splits: Array<{
+    wallet: string
+    role: string
+    pct: number
+    // BOLT12 offer or Lightning Address (e.g. "name@walletofsatoshi.com").
+    // Used by scripts/demo-flow.sh to fan real onward Lightning sends to
+    // each contributor after an L402 payment lands. For the demo we point
+    // every contributor at the same loopback BOLT12 sink so payments
+    // succeed end-to-end without needing 8 distinct wallets to be funded
+    // and reachable; for production you assign each contributor their own.
+    lnAddress?: string
+  }>
   knowledge: Record<string, string>
 }
 

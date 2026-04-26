@@ -7,11 +7,36 @@
     "consultas": 234,
     "pricePerCallSats": 100,
     "splits": [
-      { "wallet": "@curador-3a8f", "role": "Curador principal", "pct": 0.40 },
-      { "wallet": "@validador-9b21", "role": "Validador legal", "pct": 0.30 },
-      { "wallet": "@contrib-7e44", "role": "Contribuidor", "pct": 0.10 },
-      { "wallet": "@contrib-d12c", "role": "Contribuidor", "pct": 0.10 },
-      { "wallet": "@contrib-5fa9", "role": "Contribuidor", "pct": 0.10 }
+      {
+        "wallet": "@curador-3a8f",
+        "role": "Curador principal",
+        "pct": 0.4,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@validador-9b21",
+        "role": "Validador legal",
+        "pct": 0.3,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@contrib-7e44",
+        "role": "Contribuidor",
+        "pct": 0.1,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@contrib-d12c",
+        "role": "Contribuidor",
+        "pct": 0.1,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@contrib-5fa9",
+        "role": "Contribuidor",
+        "pct": 0.1,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      }
     ],
     "knowledge": {
       "iva": "El IGV en Perú es 18% (16% IGV + 2% IPM). Aplica a la mayoría de bienes y servicios excepto los exonerados del Apéndice I y II del TUO de la Ley del IGV.",
@@ -30,9 +55,24 @@
     "consultas": 87,
     "pricePerCallSats": 75,
     "splits": [
-      { "wallet": "@curador-1a2b", "role": "Curador", "pct": 0.50 },
-      { "wallet": "@contrib-3c4d", "role": "Contribuidor", "pct": 0.25 },
-      { "wallet": "@contrib-5e6f", "role": "Contribuidor", "pct": 0.25 }
+      {
+        "wallet": "@curador-1a2b",
+        "role": "Curador",
+        "pct": 0.5,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@contrib-3c4d",
+        "role": "Contribuidor",
+        "pct": 0.25,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      },
+      {
+        "wallet": "@contrib-5e6f",
+        "role": "Contribuidor",
+        "pct": 0.25,
+        "lnAddress": "lno1pgeyz7twd9qkwetww3ejqun9v35hxarjd9382arfdahzqumfde4jq2rvdahhqcnpvd4jqen0wgsxgetddu53plgznup2vveee34ezwmrxz7krvh5dxhc0pdxqydxxpdmzq3f3288v6t5wwcrd7hr7gm4dds4hn6k4z6z3z2tlrgnh4hmjq4eq75fpxtkpewcg0gsgq43uqpdm2333srd66csvjfzl0ckanlgrdky88dpazagqa7pczfy9vq8gxjtgxhyhfhm0eezaavt2najq940wpn7c5mj35k2f5zr6hmjgny2wgcwx7rphqfds66sudda4rv8n2wjrx78sw40kqrgz87rws7ehsxy7eq7xpye8m737w8ywkyq0a8h2q3c6zjvz7zac6yh6kv4wf7yknknejxlcpxm7qw087jfzf25mhsr7e6dengz99whsxls6jpxtkp36j9mur3g4n8jsglq0eshj8mmftppsut7hatsqapprp8remlyrcdpw355t65epuzr4fyqftspwwh6nm27zwu7y2u885pg8j8sc2erjhu4q6p9n7rhv9hyw4l3cxqhktmrue2x850j0zh093u85gax3pw448hmcqhaqf6jdntwh2xz0y7dhwd3v4v6mn9v5gnjt62xccu9zdeqvekuu7wnnmnwt7wfckmcqwynv609kt42ycjn5gdv37lw5gdwu2mk4e5ekuvy9gn4zckk83567qr5qvlfdjl93vslw4my0f5pw5se9n6dzddwc9ulk3qypruy4cs5hevx3ry0frk4xneqzfpz289m5da3mmtnxsrlfkkkjlxdsnqvpaadyxrtsrevcwmrjemukun0ryxra5kcteek5at73e7fn7882pu62mkpmd0rt0tdze6ulr290fwvuf6fhmynthrgxgp42rhf77s330drdnra7vcgvwkryczrupljh6z2nawny8auc0p384gqwnl3lxkhnwma2cfr20j5yvjsgwfjx38y6e9sn5zafrzrt60kzkg6deq3dl2svfqg56u3glvdqckwlhj2n289aphxnmentl070yjkkyf4lzz9wvz960afp0k8reuk7fjv4re35tqmcarg3vt3f53w2wmal72wua2r4tyfka6acnq6qjyhgg32a6tlsjr3vggz2mg9yaeh37fyw29y8e54tsf4n4xyeuf2ja5mnzfa0u062mn9f2rq"
+      }
     ],
     "knowledge": {
       "default": "Consulta de data science en español procesada. La tribu Data Science ES sugiere validar el approach con el repo público de la comunidad."
