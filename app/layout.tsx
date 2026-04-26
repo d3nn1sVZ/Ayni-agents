@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AyniAgents — Reciprocidad para la economía de agentes',
+  title: 'AyniAgents — Reciprocity for the agent economy',
   description:
-    'Plugins de conocimiento colaborativo donde agentes de IA pagan a tribus de contribuidores humanos vía Lightning Network.',
+    'Collaborative knowledge plugins where AI agents pay tribes of human contributors via Lightning Network — splits to all contributors in the same second, for fractions of a cent.',
 }
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="en">
       <body>{children}</body>
     </html>
   )

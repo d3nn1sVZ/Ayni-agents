@@ -2,38 +2,38 @@
   "tributario-pe": {
     "id": "tributario-pe",
     "name": "Tributario PE",
-    "description": "Tribu de expertos en legislación tributaria peruana actualizada al 2026.",
+    "description": "Tribe of Peruvian tax-law experts. Knowledge updated through 2026 covering IGV, fourth/fifth-category income tax, RER, NRUS, and other current rulings.",
     "rating": 4.7,
     "consultas": 234,
     "pricePerCallSats": 100,
     "splits": [
       {
         "wallet": "@curador-3a8f",
-        "role": "Curador principal",
+        "role": "Lead curator",
         "pct": 0.4,
         "lnAddress": "ayniagentscurador@coinos.io"
       },
       {
         "wallet": "@validador-9b21",
-        "role": "Validador legal",
+        "role": "Legal validator",
         "pct": 0.3,
         "lnAddress": "ayniagentscontriba@coinos.io"
       },
       {
         "wallet": "@contrib-7e44",
-        "role": "Contribuidor",
+        "role": "Contributor",
         "pct": 0.1,
         "lnAddress": "ayniagentscontribb@coinos.io"
       },
       {
         "wallet": "@contrib-d12c",
-        "role": "Contribuidor",
+        "role": "Contributor",
         "pct": 0.1,
         "lnAddress": "ayniagentscurador@coinos.io"
       },
       {
         "wallet": "@contrib-5fa9",
-        "role": "Contribuidor",
+        "role": "Contributor",
         "pct": 0.1,
         "lnAddress": "ayniagentscontriba@coinos.io"
       }
@@ -50,26 +50,26 @@
   "data-science-es": {
     "id": "data-science-es",
     "name": "Data Science ES",
-    "description": "Tribu de practicantes de data science con foco en español/Latam — modelos, datasets, prácticas regionales.",
+    "description": "Tribe of Spanish/LatAm-focused data science practitioners — models, datasets, regional best practices in Spanish.",
     "rating": 4.5,
     "consultas": 87,
     "pricePerCallSats": 75,
     "splits": [
       {
         "wallet": "@curador-1a2b",
-        "role": "Curador",
+        "role": "Curator",
         "pct": 0.5,
         "lnAddress": "ayniagentscurador@coinos.io"
       },
       {
         "wallet": "@contrib-3c4d",
-        "role": "Contribuidor",
+        "role": "Contributor",
         "pct": 0.25,
         "lnAddress": "ayniagentscontriba@coinos.io"
       },
       {
         "wallet": "@contrib-5e6f",
-        "role": "Contribuidor",
+        "role": "Contributor",
         "pct": 0.25,
         "lnAddress": "ayniagentscontribb@coinos.io"
       }

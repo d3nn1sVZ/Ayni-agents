@@ -14,14 +14,16 @@ type RouteContext = { params: Promise<{ plugin: string }> }
 
 const DEMO_QUERIES: Record<string, string[]> = {
   'tributario-pe': [
-    '¿qué es el IGV?',
-    '¿cómo tributan las rentas de cuarta categoría?',
-    '¿cuál es el tope del NRUS?',
-    '¿qué tasas aplica el Impuesto a la Renta de quinta?',
+    'What is the IGV (Peruvian VAT) rate?',
+    'How are 4th-category (independent worker) earnings taxed in Peru?',
+    'What is the NRUS monthly cap for small Peruvian businesses?',
+    'Tax rates for 5th-category (employee) income in Peru?',
+    'When does a Peruvian freelancer have to register for RER?',
   ],
   'data-science-es': [
-    '¿qué modelo recomiendan para clasificación de texto en español?',
-    '¿dataset abierto de comentarios en español?',
+    'Best Spanish-language NER model for legal documents?',
+    'Open dataset of Spanish-language consumer reviews?',
+    'How to fine-tune a multilingual model for Latin American Spanish?',
   ],
 }
 

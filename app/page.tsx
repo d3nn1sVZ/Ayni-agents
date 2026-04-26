@@ -53,9 +53,9 @@ export default function Page() {
             AyniAgents
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-ayni-cloud/80">
-            <em>Ayni</em> programable. Tribus de contribuidores humanos
-            mantienen plugins de conocimiento. Agentes de IA pagan por consumirlos.
-            Cada contribuidor recibe su parte en el mismo segundo, vía Lightning.
+            Programmable <em>ayni</em>. Tribes of human contributors maintain
+            specialized knowledge plugins. AI agents pay to consume them.
+            Every contributor receives their share in the same second, via Lightning.
           </p>
         </div>
       </header>
@@ -63,10 +63,10 @@ export default function Page() {
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-2xl">Tribus activas</h2>
+            <h2 className="font-display text-2xl">Active tribes</h2>
             <p className="mt-2 text-sm text-ayni-stone/70">
-              Cada tribu cobra por consulta. El pago se divide entre quienes
-              mantienen el plugin actualizado.
+              Each tribe charges per query. The payment splits across the
+              contributors who maintain the plugin.
             </p>
 
             <ul className="mt-6 space-y-4">
@@ -90,9 +90,9 @@ export default function Page() {
                   <div className="mt-4 flex items-center gap-3 text-xs text-ayni-stone/60">
                     <span>★ {t.rating.toFixed(1)}</span>
                     <span>·</span>
-                    <span>{t.consultas} consultas</span>
+                    <span>{t.consultas} queries</span>
                     <span>·</span>
-                    <span>{t.splits.length} contribuidores</span>
+                    <span>{t.splits.length} contributors</span>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-1.5">
@@ -109,7 +109,7 @@ export default function Page() {
                   <pre className="mt-5 overflow-x-auto rounded-lg bg-ayni-night p-3 font-mono text-[11px] leading-relaxed text-ayni-cloud/80">
                     {`GET /api/ayni/${t.id}?q=...
 ↳ 402 Payment Required (Lightning invoice)
-↳ pay → respuesta + payout split a ${t.splits.length} wallets`}
+↳ pay → answer + payout split to ${t.splits.length} wallets`}
                   </pre>
 
                   <button
@@ -119,8 +119,8 @@ export default function Page() {
                     className="mt-4 w-full rounded-lg border border-ayni-earth/40 bg-ayni-earth/5 px-4 py-2.5 text-sm font-medium text-ayni-earth transition-colors hover:bg-ayni-earth/10 disabled:opacity-50"
                   >
                     {triggering === t.id
-                      ? 'Disparando ayni...'
-                      : 'Disparar ayni de demostración →'}
+                      ? 'Triggering ayni…'
+                      : 'Trigger demo ayni →'}
                   </button>
                 </li>
               ))}
@@ -129,17 +129,17 @@ export default function Page() {
 
           <div className="lg:sticky lg:top-6 lg:self-start">
             <h2 className="font-display text-2xl">
-              Pagos en tiempo real
+              Real-time payments
             </h2>
             <p className="mt-2 text-sm text-ayni-stone/70">
-              Cada vez que un agente consulta una tribu, los sats se reparten
-              entre los contribuidores. Esto es imposible con Stripe.
+              Every time an agent queries a tribe, sats fan out across its
+              contributors in seconds. Impossible with Stripe.
             </p>
 
             <div className="mt-6 space-y-3">
               {events.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-ayni-stone/20 bg-white/50 p-10 text-center text-sm text-ayni-stone/50">
-                  Esperando consultas...
+                  Waiting for queries…
                   <br />
                   <span className="font-mono text-xs">
                     GET /api/ayni/tributario-pe?q=igv
@@ -186,15 +186,15 @@ function EventCard({ ev }: { ev: PayoutEvent }) {
         <div className="flex items-center justify-between text-xs text-ayni-stone/60">
           <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
             <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-ayni-sky" />
-            agente consulta · {ev.tribuName}
+            agent query · {ev.tribuName}
           </span>
           <span>· · · sats</span>
         </div>
         <p className="mt-2 truncate text-sm text-ayni-stone/80">
-          “{ev.query || '(sin query)'}”
+          “{ev.query || '(no query)'}”
         </p>
         <p className="mt-3 text-xs text-ayni-stone/50">
-          Esperando confirmación de pago Lightning...
+          Waiting for Lightning payment confirmation…
         </p>
       </div>
     )
@@ -205,12 +205,12 @@ function EventCard({ ev }: { ev: PayoutEvent }) {
       <div className="flex items-center justify-between text-xs text-ayni-stone/60">
         <span className="flex items-center gap-2 font-mono uppercase tracking-wider">
           <span className="inline-block h-2 w-2 rounded-full bg-ayni-maize" />
-          ayni cumplido · {ev.tribuName}
+          ayni fulfilled · {ev.tribuName}
         </span>
         <span className="font-semibold text-ayni-earth">+{ev.totalSats} sat</span>
       </div>
       <p className="mt-2 truncate text-sm text-ayni-stone/80">
-        “{ev.query || '(sin query)'}”
+        “{ev.query || '(no query)'}”
       </p>
       <ul className="mt-3 space-y-1.5">
         {ev.splits.map((s) => (
