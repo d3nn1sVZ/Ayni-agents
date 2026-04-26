@@ -176,7 +176,7 @@ Same infrastructure can host civic plugins (Peruvian tax code maintained by a lo
 
 - **Dennis Vivas** — Architect & Pitch Lead
 - **Cindy Rojas** — Backend dev
-- **Jhoselyn Pajuelo** — Frontend / UX
+- **Jhoselyn Pajuelo(millie)* — Frontend / UX
 
 ## Tags
 
