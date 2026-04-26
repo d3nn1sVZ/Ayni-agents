@@ -24,8 +24,20 @@ We do what Stripe physically cannot: **pay several humans per single sub-cent tr
 
 AI agents are scaling fast, but value flows back to a handful of model providers and platforms. The human experts whose knowledge powers useful agent outputs are invisible and unpaid. Two structural failures cause this:
 
-1. **Payment rails make collective rewards impossible.** Stripe and card networks charge a $0.30+ minimum per transaction, so splitting one agent query across even 5 contributors is mathematically negative-sum.
-2. **Specialized communities are locked out of the agent economy.** Domain experts — especially in emerging markets — have no programmatic way to monetize their expertise. It stays trapped in PDFs, consulting silos, and LinkedIn posts.
+1. **Payment rails make collective rewards impossible.** There is no way for an agent to consume specialized vertical knowledge — Peruvian tax code, Spanish-language data science practice, regional legal interpretations — and automatically reward the humans who curate it. Stripe and card networks charge a $0.30+ minimum per transaction, so splitting one agent query across even 5 contributors is mathematically negative-sum.
+2. **Specialized communities are locked out of the agent economy.** Domain experts — especially in emerging markets — have no programmatic way to monetize their expertise, so it stays trapped in PDFs, consulting silos, and LinkedIn posts. Agent outputs get worse, and Global South knowledge gets excluded from the AI value chain.
+
+The challenge: **build the payment-and-distribution layer that makes a multi-contributor knowledge marketplace economically viable** — something only Lightning Network can technically deliver today.
+
+## Target audience
+
+A two-sided marketplace.
+
+**Supply side — Knowledge contributors.** Small communities (typically 3–10 people in the MVP, designed to scale further) of domain experts organized as `tribus`: tax accountants, data scientists, lawyers, researchers — particularly in emerging markets where expertise is under-monetized. Each tribu collectively maintains a specialized plugin and shares revenue automatically — *ayni encoded in software*.
+
+**Demand side — AI agents and their operators.** Autonomous agents (and the developers/companies running them) that need vertical, trusted, up-to-date specialized knowledge for tasks general-purpose LLMs can't solve alone — e.g. an agent doing Peruvian tax filings or jurisdiction-specific lookups.
+
+**Secondary:** developers building agentic applications who need a permissionless, programmatic way to extend agent capabilities without per-API contracts, signups, or subscriptions.
 
 ## The solution
 
@@ -62,7 +74,8 @@ A real-time feed (Server-Sent Events, two-phase: `requested` → `settled`) ligh
 
 We do the one thing the existing payment stack physically cannot: **split a single sub-cent payment across multiple contributors, in seconds, globally, with no intermediaries.**
 
-- **Stripe:** ~$0.30 minimum fee → splitting across 5 recipients is negative-sum.
+- **Stripe:** ~$0.30 minimum fee per transaction → splitting across 5+ recipients is negative-sum.
+- **Stablecoins (x402 / USDC):** non-trivial gas + per-transfer fees on most chains, plus a single corporate gatekeeper (issuer) who sets policy and can freeze funds.
 - **Ayni on Lightning:** ~$0.00 fee → distributing 100 sats across 5 contributors costs effectively nothing and settles in seconds, 24/7, across borders, with no contracts, KYC, or subscriptions.
 
 Three positioning axes:
@@ -94,6 +107,12 @@ agent
                                 └── scripts/demo-flow.sh
                                       └── onward Lightning sends to each contributor wallet
 ```
+
+**Verified live on Bitcoin mainnet during the build:**
+
+- 5 autonomous L402 unlocks paid by an MDK agent-wallet (10, 75, 10, 5, 1 sats — including a 1-sat invoice that no other rail can settle).
+- 1 onward Lightning send from agent-wallet to a real external `coinos.io` Lightning Address — proving the redistribution architecture isn't a loopback shortcut, it's real Lightning routing across separate nodes.
+- See [`scripts/demo-output-broll.txt`](scripts/demo-output-broll.txt) for the full captured terminal output, complete with payment hashes and preimages anyone can verify on-chain.
 
 ## Quick start
 
@@ -135,9 +154,21 @@ A config change in [`data/tribus.json`](data/tribus.json) — not a code change.
 - **For the agent economy:** unlocks vertical, trusted knowledge that general-purpose models can't supply, while solving "how do agents pay for things" without replacing one corporate gatekeeper (Visa) with another (stablecoin issuers).
 - **For Lightning / Bitcoin:** demonstrates a real, non-trivial, agent-native use case that genuinely *requires* Lightning — micro fan-out payments no other rail can deliver. Directly addresses Spiral's mandate of enabling AI agents to earn and pay permissionlessly.
 
+## Why we picked Spiral
+
+Strongest match between three things:
+
+- **Team motivation:** fintech + agents + UX is what we already love.
+- **Mentorship available:** the MDK / Lightning team is reachable in Spanish via Discord throughout the build.
+- **Unique upside:** Spiral's "impossible-with-Stripe" bonus criterion rewards exactly what Lightning uniquely makes possible — sub-cent micro fan-out that no card network or stablecoin issuer can match.
+
+## Plan B that de-risked our choice
+
+If MoneyDevKit had blocked us in the first 30 minutes of smoke-testing, the team had a documented pivot to the World Bank "Unmapped" challenge — leveraging Cindy Rojas's IMF and Dennis Vivas's IDB experience. The smoke test passed in 12 minutes, so Plan A continued.
+
 ## Real-world extension path
 
-Same infrastructure can host civic plugins (Peruvian tax code maintained by a local CPA tribu), scientific plugins (university thesis repositories), or regional legal tribus — directly relevant to the Hack Nation incubation thesis on Global South AI infrastructure.
+Same infrastructure can host civic plugins (Peruvian tax code maintained by a local CPA tribu), scientific plugins (university thesis repositories), or regional legal tribus — directly relevant to the Hack Nation incubation thesis on Global South AI infrastructure. Adding a third tribu (e.g. Legal PE) is a config change in [`data/tribus.json`](data/tribus.json), not a code change.
 
 ## Team
 
