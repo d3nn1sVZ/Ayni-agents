@@ -3,7 +3,7 @@
 import type { PayoutEvent } from '@/lib/types'
 
 function fmt(ts: number) {
-  return new Date(ts).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+  return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
 }
 
 function shortW(w: string) {
@@ -45,7 +45,7 @@ function EventCard({ event }: { event: PayoutEvent }) {
         <span className={`font-mono font-bold text-sm ${settled ? 'text-[#E8B547]' : 'text-[#38BDF8]'}`}>
           {event.totalSats} sats
         </span>
-        {!settled && <span className="text-white/25 text-[11px]">pendiente…</span>}
+        {!settled && <span className="text-white/25 text-[11px]">pending…</span>}
         {settled && <span className="text-emerald-400 text-[11px]">→ {event.splits.length} wallets</span>}
       </div>
 
@@ -97,8 +97,8 @@ export default function PayoutFeed({ events }: { events: PayoutEvent[] }) {
       <div className="flex-1 overflow-y-auto">
         {events.length === 0
           ? <div className="flex flex-col items-center justify-center h-40 text-white/20 text-sm gap-2">
-              <span className="text-3xl">◌</span>Esperando pagos…
-            </div>
+            <span className="text-3xl">◌</span>Waiting for payments…
+          </div>
           : events.map(e => <EventCard key={e.id} event={e} />)
         }
       </div>

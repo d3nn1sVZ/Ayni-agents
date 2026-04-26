@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import AyniBot from './AyniBot'
 
 const NAV = [
-  { href: '/',             label: 'Marketplace' },
-  { href: '/agent',        label: 'Agentes IA'  },
-  { href: '/human',        label: 'Humanos'      },
-  { href: '/contributors', label: 'Contribuidores' },
+  { href: '/',             label: 'Marketplace'  },
+  { href: '/agent',        label: 'AI Agents'    },
+  { href: '/human',        label: 'Humans'       },
+  { href: '/contributors', label: 'Contributors' },
 ]
 
 type Props = {
@@ -74,7 +74,7 @@ export default function Header({ totalSats, confirmedCount }: Props) {
               <div className="font-mono font-bold text-base text-[#E8B547] tabular-nums leading-tight">
                 {totalSats.toLocaleString()}
               </div>
-              <div className="text-white/25 text-[9px] tracking-wider uppercase">sats distribuidos</div>
+              <div className="text-white/25 text-[9px] tracking-wider uppercase">sats distributed</div>
             </div>
           )}
           {confirmedCount !== undefined && (
@@ -82,7 +82,7 @@ export default function Header({ totalSats, confirmedCount }: Props) {
               <div className="font-mono font-bold text-base text-[#38BDF8] tabular-nums leading-tight">
                 {confirmedCount}
               </div>
-              <div className="text-white/25 text-[9px] tracking-wider uppercase">pagos</div>
+              <div className="text-white/25 text-[9px] tracking-wider uppercase">payments</div>
             </div>
           )}
           <div className="flex items-center gap-2 glass-sm px-3 py-1.5">

@@ -3,20 +3,20 @@ import type { Tribu, PayoutEvent } from '@/lib/types'
 type Props = { tribes: Tribu[]; events: PayoutEvent[] }
 
 export default function StatsBar({ tribes, events }: Props) {
-  const settled   = events.filter(e => e.phase === 'settled')
+  const settled = events.filter(e => e.phase === 'settled')
   const totalSats = settled.reduce((a, e) => a + e.totalSats, 0)
-  const active    = tribes.filter(t => t.isActive).length
+  const active = tribes.filter(t => t.isActive).length
   const consultas = tribes.reduce((a, t) => a + t.consultas, 0)
   const avgRating = (tribes.reduce((a, t) => a + t.rating, 0) / tribes.length).toFixed(1)
-  const agents    = new Set(events.map(e => e.agentId)).size
+  const agents = new Set(events.map(e => e.agentId)).size
 
   const stats = [
-    { label: 'Sats distribuidos',   value: totalSats.toLocaleString(), color: 'text-[#E8B547]' },
-    { label: 'Tribus activas',      value: `${active} / ${tribes.length}`, color: 'text-[#8B5CF6]' },
-    { label: 'Consultas históricas',value: consultas.toLocaleString(),  color: 'text-[#EDE9E1]' },
-    { label: 'Rating promedio',     value: avgRating,                   color: 'text-[#10B981]' },
-    { label: 'Agentes únicos',      value: String(agents),              color: 'text-[#38BDF8]' },
-    { label: 'Pagos liquidados',    value: String(settled.length),      color: 'text-[#F472B6]' },
+    { label: 'Sats distributed', value: totalSats.toLocaleString(), color: 'text-[#E8B547]' },
+    { label: 'Active tribes', value: `${active} / ${tribes.length}`, color: 'text-[#8B5CF6]' },
+    { label: 'Total queries', value: consultas.toLocaleString(), color: 'text-[#EDE9E1]' },
+    { label: 'Average rating', value: avgRating, color: 'text-[#10B981]' },
+    { label: 'Unique agents', value: String(agents), color: 'text-[#38BDF8]' },
+    { label: 'Settled payments', value: String(settled.length), color: 'text-[#F472B6]' },
   ]
 
   return (

@@ -80,7 +80,7 @@ body::before {
 }
 
 /* ── Terminal styles ── */
-.terminal-line { @apply font-mono text-xs leading-relaxed animate-slide-in; }
+.terminal-line { @apply font-mono text-xs leading-relaxed animate-fade-in; }
 .term-sys   { color: #E8B547; }
 .term-info  { color: #60A5FA; }
 .term-req   { color: #C4B5FD; }

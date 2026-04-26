@@ -1,19 +1,19 @@
 import type { Tribu } from '@/lib/types'
 
 const CAT_GLOW: Record<string, string> = {
-  'Legal & Finanzas': 'shadow-[0_0_32px_0_rgba(59,130,246,0.1)] border-blue-500/20',
-  'Tecnología':       'shadow-[0_0_32px_0_rgba(139,92,246,0.1)] border-violet-500/20',
-  'Salud':            'shadow-[0_0_32px_0_rgba(16,185,129,0.1)] border-emerald-500/20',
-  'Crypto & DeFi':    'shadow-[0_0_32px_0_rgba(251,146,60,0.1)] border-orange-500/20',
-  'Educación':        'shadow-[0_0_32px_0_rgba(244,114,182,0.1)] border-pink-500/20',
+  'Legal & Finance': 'shadow-[0_0_32px_0_rgba(59,130,246,0.1)] border-blue-500/20',
+  'Technology': 'shadow-[0_0_32px_0_rgba(139,92,246,0.1)] border-violet-500/20',
+  'Healthcare': 'shadow-[0_0_32px_0_rgba(16,185,129,0.1)] border-emerald-500/20',
+  'Crypto & DeFi': 'shadow-[0_0_32px_0_rgba(251,146,60,0.1)] border-orange-500/20',
+  'Education': 'shadow-[0_0_32px_0_rgba(244,114,182,0.1)] border-pink-500/20',
 }
 
 const CAT_BADGE: Record<string, string> = {
-  'Legal & Finanzas': 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-  'Tecnología':       'bg-violet-500/10 text-violet-300 border-violet-500/20',
-  'Salud':            'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-  'Crypto & DeFi':    'bg-orange-500/10 text-orange-300 border-orange-500/20',
-  'Educación':        'bg-pink-500/10 text-pink-300 border-pink-500/20',
+  'Legal & Finance': 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+  'Technology': 'bg-violet-500/10 text-violet-300 border-violet-500/20',
+  'Healthcare': 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+  'Crypto & DeFi': 'bg-orange-500/10 text-orange-300 border-orange-500/20',
+  'Education': 'bg-pink-500/10 text-pink-300 border-pink-500/20',
 }
 
 const BAR_COLORS = ['#E8B547', '#8B5CF6', '#10B981', '#38BDF8', '#F472B6', '#FB923C']
@@ -29,7 +29,7 @@ function Stars({ rating }: { rating: number }) {
 }
 
 export default function TribeCard({ tribe }: { tribe: Tribu }) {
-  const catGlow  = CAT_GLOW[tribe.category]  ?? ''
+  const catGlow = CAT_GLOW[tribe.category] ?? ''
   const catBadge = CAT_BADGE[tribe.category] ?? 'bg-white/5 text-white/40 border-white/10'
 
   return (
@@ -48,7 +48,7 @@ export default function TribeCard({ tribe }: { tribe: Tribu }) {
           </span>
           {tribe.verified && (
             <span className="text-[10px] px-2.5 py-1 rounded-full border bg-[#E8B547]/10 text-[#E8B547] border-[#E8B547]/25 font-semibold">
-              ✓ Verificada
+              ✓ Verified
             </span>
           )}
           {!tribe.isActive && (
@@ -76,12 +76,12 @@ export default function TribeCard({ tribe }: { tribe: Tribu }) {
       <div className="flex items-center gap-0 text-sm">
         <div className="flex-1">
           <span className="text-[#E8B547] font-mono font-bold text-xl">{tribe.pricePerCallSats}</span>
-          <span className="text-white/30 text-xs ml-1">sats/consulta</span>
+          <span className="text-white/30 text-xs ml-1">sats/query</span>
         </div>
         <div className="w-px h-7 bg-white/[0.07] mx-3" />
         <div className="flex-1">
           <span className="text-[#EDE9E1] font-mono font-bold text-xl">{tribe.consultas.toLocaleString()}</span>
-          <span className="text-white/30 text-xs ml-1">consultas</span>
+          <span className="text-white/30 text-xs ml-1">queries</span>
         </div>
         <div className="w-px h-7 bg-white/[0.07] mx-3" />
         <div className="flex-1">
@@ -103,7 +103,7 @@ export default function TribeCard({ tribe }: { tribe: Tribu }) {
 
       {/* ── Split bars ── */}
       <div>
-        <div className="label mb-2.5">Distribución de pagos</div>
+        <div className="label mb-2.5">Payout distribution</div>
         <div className="flex flex-col gap-2">
           {tribe.splits.map((s, i) => (
             <div key={s.wallet} className="flex items-center gap-2.5">
@@ -129,7 +129,7 @@ export default function TribeCard({ tribe }: { tribe: Tribu }) {
                            text-white/40 text-sm font-medium
                            hover:border-[#E8B547]/40 hover:text-[#E8B547] hover:bg-[#E8B547]/[0.04]
                            transition-all duration-200">
-          Consultar tribu →
+          Query tribe →
         </button>
       )}
     </div>

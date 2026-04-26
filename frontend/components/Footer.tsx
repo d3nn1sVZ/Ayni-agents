@@ -7,10 +7,10 @@ const TEAM = [
 ]
 
 const NAV = [
-  { href: '/',             label: 'Marketplace'    },
-  { href: '/agent',        label: 'Agentes IA'     },
-  { href: '/human',        label: 'Humanos'        },
-  { href: '/contributors', label: 'Contribuidores' },
+  { href: '/',             label: 'Marketplace'  },
+  { href: '/agent',        label: 'AI Agents'    },
+  { href: '/human',        label: 'Humans'       },
+  { href: '/contributors', label: 'Contributors' },
 ]
 
 export default function Footer() {
@@ -44,7 +44,7 @@ export default function Footer() {
 
           {/* Team */}
           <div>
-            <div className="label mb-5">Equipo</div>
+            <div className="label mb-5">Team</div>
             <div className="flex flex-col gap-4">
               {TEAM.map(m => (
                 <div key={m.name} className="flex items-center justify-between">
@@ -55,7 +55,7 @@ export default function Footer() {
             </div>
 
             <div className="border-t border-white/[0.06] mt-6 pt-5">
-              <div className="label mb-3">Navegar</div>
+              <div className="label mb-3">Navigate</div>
               <div className="flex flex-col gap-2">
                 {NAV.map(n => (
                   <a key={n.href} href={n.href}
@@ -69,18 +69,18 @@ export default function Footer() {
 
           {/* Ayni cultural note */}
           <div>
-            <div className="label mb-5">El principio Ayni</div>
+            <div className="label mb-5">The Ayni principle</div>
             <p className="text-white/35 text-sm leading-relaxed mb-4">
-              <em className="text-white/55 not-italic font-medium">Ayni</em> — palabra quechua que significa reciprocidad
-              y ayuda mutua. Durante siglos estructuró el trabajo colectivo en los Andes.
+              <em className="text-white/55 not-italic font-medium">Ayni</em> — a Quechua word meaning reciprocity
+              and mutual aid. For centuries it structured collective work in the Andes.
             </p>
             <p className="text-white/25 text-sm leading-relaxed mb-4 italic">
-              "Hoy te ayudo. Mañana me ayudas."
+              "Today I help you. Tomorrow you help me."
             </p>
             <p className="text-white/30 text-sm leading-relaxed">
-              El conocimiento siempre se ha compartido así. Pero nunca se había podido{' '}
-              <span className="text-[#E8B547]">pagar</span> así — los fees lo hacían imposible.
-              Lightning lo cambia todo.
+              Knowledge has always been shared this way. But it could never be{' '}
+              <span className="text-[#E8B547]">paid</span> this way — fees made it impossible.
+              Lightning changes everything.
             </p>
 
             <div className="mt-6 glass-sm px-4 py-3 inline-block">

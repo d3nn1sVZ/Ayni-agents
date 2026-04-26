@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" style={{ height: '100%', background: '#05040A' }}>
+    <html lang="en" style={{ height: '100%', background: '#05040A' }}>
       <body style={{ height: '100%', margin: 0, background: '#05040A', color: '#EDE9E1' }}
         className="font-sans antialiased">
         {/* Fixed cosmic background — persists across all pages */}

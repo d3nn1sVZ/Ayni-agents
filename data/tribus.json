@@ -7,35 +7,67 @@
     "consultas": 234,
     "pricePerCallSats": 100,
     "splits": [
-      { "wallet": "@curador-3a8f", "role": "Curador principal", "pct": 0.40 },
-      { "wallet": "@validador-9b21", "role": "Validador legal", "pct": 0.30 },
-      { "wallet": "@contrib-7e44", "role": "Contribuidor", "pct": 0.10 },
-      { "wallet": "@contrib-d12c", "role": "Contribuidor", "pct": 0.10 },
-      { "wallet": "@contrib-5fa9", "role": "Contribuidor", "pct": 0.10 }
+      {
+        "wallet": "@curador-3a8f",
+        "role": "Lead curator",
+        "pct": 0.40
+      },
+      {
+        "wallet": "@validador-9b21",
+        "role": "Legal validator",
+        "pct": 0.30
+      },
+      {
+        "wallet": "@contrib-7e44",
+        "role": "Contributor",
+        "pct": 0.10
+      },
+      {
+        "wallet": "@contrib-d12c",
+        "role": "Contributor",
+        "pct": 0.10
+      },
+      {
+        "wallet": "@contrib-5fa9",
+        "role": "Contributor",
+        "pct": 0.10
+      }
     ],
     "knowledge": {
-      "iva": "El IGV en Perú es 18% (16% IGV + 2% IPM). Aplica a la mayoría de bienes y servicios excepto los exonerados del Apéndice I y II del TUO de la Ley del IGV.",
-      "renta-cuarta": "Las rentas de cuarta categoría (trabajo independiente) tributan como renta del trabajo. Deducción especial: 20% sobre la renta bruta hasta 24 UIT, más 7 UIT de deducción adicional. Tasas progresivas 8% a 30% según TUO Ley Impuesto a la Renta.",
-      "renta-quinta": "Las rentas de quinta categoría (trabajo dependiente) tributan con deducción de 7 UIT y tasas progresivas 8% a 30%. Las gratificaciones de julio y diciembre están inafectas.",
-      "rer": "El Régimen Especial de Renta (RER) permite tributar 1.5% sobre los ingresos netos mensuales. Topes: ingresos anuales ≤S/525,000 y activos fijos ≤S/126,000.",
-      "nrus": "El Nuevo RUS (NRUS) tiene dos categorías: hasta S/8,000/mes (cuota S/20) y hasta S/30,000/mes (cuota S/50). Solo personas naturales con negocios pequeños.",
-      "default": "La consulta tributaria que mencionas requiere análisis por un experto certificado de la tribu Tributario PE. Consulta validada con la legislación peruana vigente."
+      "iva": "VAT (IGV) in Peru is 18% (16% IGV + 2% IPM). It applies to most goods and services except those exempted under Appendices I and II of the TUO of the IGV Law.",
+      "renta-cuarta": "Fourth-category income (independent work) is taxed as labor income. Special deduction: 20% of gross income up to 24 UIT, plus an additional deduction of 7 UIT. Progressive rates from 8% to 30% according to the TUO of the Income Tax Law.",
+      "renta-quinta": "Fifth-category income (dependent work) is taxed with a deduction of 7 UIT and progressive rates from 8% to 30%. July and December bonuses are exempt.",
+      "rer": "The Special Income Regime (RER) allows taxation at 1.5% on monthly net income. Limits: annual income ≤ S/525,000 and fixed assets ≤ S/126,000.",
+      "nrus": "The New RUS (NRUS) has two categories: up to S/8,000/month (fee S/20) and up to S/30,000/month (fee S/50). Only for individuals with small businesses.",
+      "default": "The tax query you mentioned requires analysis by a certified expert from the Tax PE tribe. Query validated with current Peruvian legislation."
     }
   },
   "data-science-es": {
     "id": "data-science-es",
     "name": "Data Science ES",
-    "description": "Tribu de practicantes de data science con foco en español/Latam — modelos, datasets, prácticas regionales.",
+    "description": "Tribe of data science practitioners focused on Spanish/LatAm — models, datasets, and regional best practices.",
     "rating": 4.5,
     "consultas": 87,
     "pricePerCallSats": 75,
     "splits": [
-      { "wallet": "@curador-1a2b", "role": "Curador", "pct": 0.50 },
-      { "wallet": "@contrib-3c4d", "role": "Contribuidor", "pct": 0.25 },
-      { "wallet": "@contrib-5e6f", "role": "Contribuidor", "pct": 0.25 }
+      {
+        "wallet": "@curador-1a2b",
+        "role": "Curator",
+        "pct": 0.50
+      },
+      {
+        "wallet": "@contrib-3c4d",
+        "role": "Contributor",
+        "pct": 0.25
+      },
+      {
+        "wallet": "@contrib-5e6f",
+        "role": "Contributor",
+        "pct": 0.25
+      }
     ],
     "knowledge": {
-      "default": "Consulta de data science en español procesada. La tribu Data Science ES sugiere validar el approach con el repo público de la comunidad."
+      "default": "Data science query in Spanish processed. The Data Science ES tribe suggests validating the approach with the community’s public repository."
     }
   }
 }
